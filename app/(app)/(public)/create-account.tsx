@@ -1,17 +1,17 @@
 import AppleAuthButton from '@/components/auth/AppleAuthButton';
 import GoogleAuthButton from '@/components/auth/GoogleAuthButton';
+import { CodexaButton, typography } from '@/components/ui';
 import { Colors, Fonts } from '@/constants/theme';
-import { useThemeColor } from '@/hooks/use-theme-color';
 import useUserStore from '@/hooks/use-userstore'
+import { useTheme } from '@/providers/ThemeProvider';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router'
-import { StyleSheet, Text, TextBase, TouchableOpacity, View } from 'react-native'
+import { Pressable, StyleSheet, Text, TextBase, TextInput, TouchableOpacity, View } from 'react-native'
 import Animated, { FadeInDown } from 'react-native-reanimated';
 
-const OtherOptionsPage = () => {
-  const background = useThemeColor('background');
-  const uiBackground = useThemeColor('uiBackground');
-  const textColor = useThemeColor('text');
+const CreateAccountPage = () => {
+  const { theme } = useTheme();
+  const t = typography(theme);
   const router = useRouter();
   const { setIsGuest } = useUserStore();
 
@@ -20,40 +20,43 @@ const OtherOptionsPage = () => {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: background }]}>
+    <View style={[styles.container, { backgroundColor: theme.bg0 }]}>
       <TouchableOpacity
-        style={[styles.closeBtn, { backgroundColor: uiBackground }]}
+        style={[styles.closeBtn, { backgroundColor: theme.bg0 }]}
         onPress={() => router.dismiss()}>
         <Ionicons name='close' size={24} />
       </TouchableOpacity>
-      <Text style={[styles.title, {}]}>Log in or create a Codexa account</Text>
 
       <View style={styles.buttonContainer}>
         <Animated.View entering={FadeInDown.delay(100)}>
-          <AppleAuthButton />
+          <TextInput placeholder="Nom d'utilisateur" style={{ backgroundColor: '#fff', borderRadius: 10, paddingHorizontal: 10 }}/>
         </Animated.View>
         <Animated.View entering={FadeInDown.delay(200)}>
-          <GoogleAuthButton />
+          <TextInput placeholder="Email" style={{ backgroundColor: '#fff', borderRadius: 10, paddingHorizontal: 10 }}/>
+        </Animated.View>
+        <Animated.View entering={FadeInDown.delay(300)}>
+          <TextInput placeholder="Mot de passe" style={{ backgroundColor: '#fff', borderRadius: 10, paddingHorizontal: 10 }}/>
+        </Animated.View>
+        <Animated.View entering={FadeInDown.delay(400)}>
+          <TextInput placeholder="Confirmation du mot de passe" style={{ backgroundColor: '#fff', borderRadius: 10, paddingHorizontal: 10 }}/>
         </Animated.View>
         
-        <Animated.View entering={FadeInDown.delay(300)}>
-          <TouchableOpacity style={[styles.facebookButton, { backgroundColor: Colors.pale }]}>
-            <Ionicons name='logo-facebook' size={18} color={'#000'} />
-            <Text style={[styles.facebookButtonText, {color: Colors.black}]}>Continue with Facebook</Text>
-          </TouchableOpacity>
+        <Animated.View entering={FadeInDown.delay(500)}>
+          <CodexaButton title="Inscription" variant="primary" />
         </Animated.View>
         
         <Animated.View entering={FadeInDown.delay(400)}>
-          <TouchableOpacity style={styles.otherButton} onPress={continueAsGuest}>
-            <Text style={[styles.otherButtonText, {color: textColor}]}>Continue as Guest</Text>
-          </TouchableOpacity>
+          <Pressable style={({ pressed }) => [styles.loginRow, pressed && { opacity: 0.85 }]}>
+            <Text style={[t.caption, { color: theme.muted }]}>J'ai déjà un compte </Text>
+            <Text style={[t.link, { color: theme.primary }]}>Connexion</Text>
+          </Pressable>
         </Animated.View>
       </View>
     </View>
   )
 }
 
-export default OtherOptionsPage
+export default CreateAccountPage
 
 const styles = StyleSheet.create({
   container: {
@@ -98,4 +101,5 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600'
   },
+  loginRow: { alignSelf: "center", flexDirection: "row", marginTop: 2, padding: 8 },
 })
