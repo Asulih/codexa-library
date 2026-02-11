@@ -7,6 +7,10 @@ import { Link } from "expo-router";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useThemeColor } from '@/hooks/use-theme-color';
+import FacebookAuthButton from "@/components/auth/FacebookAuthButton";
+import CreateAccountButton from "@/components/auth/CreateAccountButton";
+import Divider from "@/components/Divider";
+import AuthButton from "@/components/auth/AuthButton";
 
 export default function Index() {
   const backgroundColor = useThemeColor('background');
@@ -33,23 +37,41 @@ export default function Index() {
         <Animated.Text entering={FadeInDown} style={styles.tagline}>
           <Text>Code</Text><Text style={{ color: Colors.primary }}>xa</Text>
         </Animated.Text>
-        {/* Login buttons */}
-        <View style={styles.buttonContainer}>
+
+        {/* Account creation */}
+        <View style={styles.creationContainer}>
           <Animated.View entering={FadeInDown.delay(100)}>
-            <AppleAuthButton />
-          </Animated.View>
-          <Animated.View entering={FadeInDown.delay(200)}>
-            <GoogleAuthButton />
-          </Animated.View>
-          <Animated.View entering={FadeInDown.delay(300)}>
             <Link href={'/(app)/(public)/other-options'} asChild>
-              <TouchableOpacity style={styles.otherButton}>
-                <Text style={styles.otherButtonText}>Other options</Text>
-              </TouchableOpacity>
+              <AuthButton text='Inscription par email' backgroundColor={Colors.primary} />
             </Link>
           </Animated.View>
         </View>
 
+        <View style={styles.divider}>
+          <Animated.View entering={FadeInDown.delay(200)}>
+            <Divider>Ou inscrivez-vous</Divider>
+          </Animated.View>
+        </View>
+
+        {/* Login buttons */}
+        <View style={styles.buttonContainer}>
+          <Animated.View entering={FadeInDown.delay(300)}>
+            <AuthButton text='Se connecter avec Google' backgroundColor='#fff' icon="logo-google" textColor="#000" />
+          </Animated.View>
+          <Animated.View entering={FadeInDown.delay(400)}>
+            <AuthButton text='Connexion' backgroundColor='#3b5998' icon="logo-facebook" textColor="#fff" iconColor="#fff" />
+          </Animated.View>
+          
+        </View>
+
+        <Animated.View style={styles.alreadyAccountContainer} entering={FadeInDown.delay(500)}>
+          <Text style={styles.alreadyAccountText}>
+            J'ai déjà un compte Codexa {' '}
+            <Text style={styles.loginBtn}>
+              Connexion
+            </Text>
+          </Text>
+        </Animated.View>
       </View>
     </View>
   );
@@ -87,9 +109,18 @@ const styles = StyleSheet.create({
     marginBottom: 50,
     lineHeight: 36,
   },
+  creationContainer: {
+    gap: 12,
+    marginVertical: 10,
+    width: '75%',
+  },
+  divider: {
+    width: '100%',
+    marginVertical: 20,
+  },
   buttonContainer: {
     gap: 12,
-    width: '100%',
+    width: '75%',
   },
   otherButton: {
     flexDirection: 'row',
@@ -104,4 +135,18 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600'
   },
+  alreadyAccountContainer: {
+    marginTop: 30,
+    paddingHorizontal: 20,
+  },
+  alreadyAccountText: {
+    fontSize: 12,
+    color: '#999',
+    textAlign: 'center',
+    lineHeight: 18,
+  },
+  loginBtn: {
+    color: '#4285F4',
+    textDecorationLine: 'underline',
+  }
 });

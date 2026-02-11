@@ -1,12 +1,13 @@
+import { User } from '@/models/user';
 import zustandStorage from '@/utils/zustandStorage';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
 interface UserStore {
   isGuest: boolean;
-  user: any;
+  user: User | null;
   setIsGuest: (isGuest: boolean) => void;
-  setUser: (user: any) => any;
+  setUser: (user: User) => any;
 }
 
 const useUserStore = create<UserStore>()(
@@ -15,7 +16,7 @@ const useUserStore = create<UserStore>()(
     isGuest: false,
     user: null,
     setIsGuest: (isGuest: boolean) => set({ isGuest }),
-    setUser: (user: any) => set({ user }),
+    setUser: (user: User) => set({ user }),
   }), {
     name: 'user',
     storage: createJSONStorage(() => zustandStorage),

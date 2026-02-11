@@ -2,6 +2,9 @@ export const Colors = {
   primary: "#ecb939",
   warning: "#eb5555",
   disabled: "#cfccca",
+  pale: '#e6e6e6',
+  black: '#000000',
+
 
   light: {
     text: '#6d6158',

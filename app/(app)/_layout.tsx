@@ -5,7 +5,7 @@ const AppLayout = () => {
   const { isGuest, user } = useUserStore();
   return (
     <Stack>
-      <Stack.Protected guard={ isGuest || user } >
+      <Stack.Protected guard={ isGuest || user !== null } >
         <Stack.Screen name='(auth)' options={{ headerShown: false }} />
       </Stack.Protected>
       <Stack.Protected guard={ !isGuest && !user } >
