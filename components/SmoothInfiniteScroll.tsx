@@ -1,3 +1,4 @@
+import { Feather } from '@expo/vector-icons';
 import { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, {
@@ -10,27 +11,39 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
+const items = [
+    { id: "1", title: "Lecture", icon: "book-open" },
+    { id: "2", title: "Wishlist", icon: "bookmark" },
+    { id: "3", title: "Notes", icon: "edit-3" },
+    { id: "4", title: "Favoris", icon: "heart" },
+    { id: "5", title: "Partage", icon: "share-2" },
+    { id: "6", title: "Tags", icon: "tag" },
+  ];
 const iconDataSets = {
+  
   set1: [
-    { emoji: '📖', color: '#FFE5CC' },
-    { emoji: '📚', color: '#F4D03F' },
-    { emoji: '📕', color: '#F8D7DA' },
-    { emoji: '📜', color: '#D5EDDA' },
-    { emoji: '☕️', color: '#FADBD8' },
+    { id: "1", title: "Lecture", icon: "book-open" },
+    { id: "2", title: "Wishlist", icon: "bookmark" },
+    { id: "3", title: "Notes", icon: "edit-3" },
+    { id: "4", title: "Favoris", icon: "heart" },
+    { id: "5", title: "Partage", icon: "share-2" },
+    { id: "6", title: "Tags", icon: "tag" },
   ],
   set2: [
-    { emoji: '📘', color: '#D1ECF1' },
-    { emoji: '🪶', color: '#E2E3E5' },
-    { emoji: '☕', color: '#F4D03F' },
-    { emoji: '📙', color: '#FFE5CC' },
-    { emoji: '📔', color: '#F8D7DA' },
+    { id: "1", title: "Notes", icon: "edit-3" },
+    { id: "2", title: "Favoris", icon: "heart" },
+    { id: "3", title: "Partage", icon: "share-2" },
+    { id: "4", title: "Tags", icon: "tag" },
+    { id: "5", title: "Lecture", icon: "book-open" },
+    { id: "6", title: "Wishlist", icon: "bookmark" },
   ],
   set3: [
-    { emoji: '📗', color: '#FADBD8' },
-    { emoji: '🕯️', color: '#D1ECF1' },
-    { emoji: '🍪', color: '#FFE5CC' },
-    { emoji: '🍰', color: '#D5EDDA' },
-    { emoji: '📒', color: '#E2E3E5' },
+    { id: "1", title: "Partage", icon: "share-2" },
+    { id: "2", title: "Tags", icon: "tag" },
+    { id: "3", title: "Lecture", icon: "book-open" },
+    { id: "4", title: "Wishlist", icon: "bookmark" },
+    { id: "5", title: "Notes", icon: "edit-3" },
+    { id: "6", title: "Favoris", icon: "heart" },
   ],
 };
 
@@ -114,8 +127,13 @@ const SmoothInfiniteScroll = ({
       scrollEnabled={false}
       showsVerticalScrollIndicator={false}>
       {items.map((item, idx) => (
-        <View key={idx} style={[styles.iconContainer, { backgroundColor: item.color }]}>
-          <Text style={{ fontSize: 40 }}>{item.emoji}</Text>
+        <View key={idx} style={[styles.iconContainer]}>
+          <Feather
+              name={item.icon as any}
+              size={18}
+              color='#ecb939'
+              style={{ marginBottom: 6 }}
+            />
         </View>
       ))}
     </Animated.ScrollView>

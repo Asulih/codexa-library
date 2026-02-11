@@ -9,12 +9,12 @@ const PublicLayout = () => {
         headerShown: false,
         contentStyle: { backgroundColor }
         }} />
-      <Stack.Screen name='other-options' options={{
+      <Stack.Screen name='create-account' options={{
         headerShown: false,
         presentation: 'formSheet',
         title: '',
         headerShadowVisible: false,
-        sheetAllowedDetents: [0.6],
+        sheetAllowedDetents: [0.45],
         sheetCornerRadius: 16,
         }} />
     </Stack>
