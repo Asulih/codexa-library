@@ -43,7 +43,7 @@ export default function AuthScreen() {
           </AppText>
 
           <AppText style={[t.muted, styles.subtitle, { color: theme.muted }]}>
-            Votre bibliothèque, parfaitement rangée.
+            Parce que chaque livre compte.
           </AppText>
         </View>
 

@@ -2,7 +2,7 @@ import useUserStore from '@/hooks/use-userstore';
 import { Button, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const Page = () => {
+const DiscoveryPage = () => {
   const insets = useSafeAreaInsets();
   const { setIsGuest } = useUserStore();
 
@@ -14,6 +14,6 @@ const Page = () => {
   )
 }
 
-export default Page
+export default DiscoveryPage
 
 const styles = StyleSheet.create({})
