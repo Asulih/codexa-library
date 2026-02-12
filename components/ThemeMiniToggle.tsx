@@ -3,6 +3,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { BlurView } from "expo-blur";
 import { Feather } from "@expo/vector-icons";
 import { useTheme } from "@/providers/ThemeProvider";
+import AppText from "./ui/AppText";
 
 type Props = {
   variant?: "icon" | "label";
@@ -54,9 +55,9 @@ export default function ThemeMiniToggle({
         <Feather name={icon as any} size={16} color={theme.muted} />
 
         {showLabel && (
-          <Text style={[styles.text, { color: theme.muted }]}>
+          <AppText weight="extrabold" style={[styles.text, { color: theme.muted }]}>
             {label}
-          </Text>
+          </AppText>
         )}
       </View>
     </Pressable>
@@ -84,6 +85,5 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 13,
-    fontWeight: "800",
   },
 });

@@ -1,6 +1,7 @@
 import AppleAuthButton from '@/components/auth/AppleAuthButton';
 import GoogleAuthButton from '@/components/auth/GoogleAuthButton';
 import { CodexaButton, typography } from '@/components/ui';
+import AppText from '@/components/ui/AppText';
 import { Colors, Fonts } from '@/constants/theme';
 import useUserStore from '@/hooks/use-userstore'
 import { useTheme } from '@/providers/ThemeProvider';
@@ -47,8 +48,8 @@ const CreateAccountPage = () => {
         
         <Animated.View entering={FadeInDown.delay(400)}>
           <Pressable style={({ pressed }) => [styles.loginRow, pressed && { opacity: 0.85 }]}>
-            <Text style={[t.caption, { color: theme.muted }]}>J'ai déjà un compte </Text>
-            <Text style={[t.link, { color: theme.primary }]}>Connexion</Text>
+            <AppText style={[t.caption, { color: theme.muted }]}>J'ai déjà un compte </AppText>
+            <AppText style={[t.link, { color: theme.primary }]}>Connexion</AppText>
           </Pressable>
         </Animated.View>
       </View>

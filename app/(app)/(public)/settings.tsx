@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from "react-native";
 import { Screen, CodexaCard } from "@/components/ui";
 import ThemeSwitcher from "@/components/ThemeSwitcher";
 import { useTheme } from "@/providers/ThemeProvider";
+import AppText from "@/components/ui/AppText";
 
 export default function SettingsScreen() {
   const { theme } = useTheme();
@@ -10,13 +11,13 @@ export default function SettingsScreen() {
   return (
     <Screen>
       <View style={styles.container}>
-        <Text style={[styles.title, { color: theme.text }]}>Réglages</Text>
+        <AppText style={[styles.title, { color: theme.text }]}>Réglages</AppText>
 
         <CodexaCard style={{ marginTop: 14 }}>
-          <Text style={[styles.sectionTitle, { color: theme.text }]}>Apparence</Text>
-          <Text style={[styles.sectionSub, { color: theme.muted }]}>
+          <AppText style={[styles.sectionTitle, { color: theme.text }]}>Apparence</AppText>
+          <AppText style={[styles.sectionSub, { color: theme.muted }]}>
             Choisissez le thème de Codexa.
-          </Text>
+          </AppText>
 
           <View style={{ marginTop: 12 }}>
             <ThemeSwitcher />

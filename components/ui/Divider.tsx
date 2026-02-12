@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { useTheme } from "@/providers/ThemeProvider";
+import AppText from "./AppText";
 
 export default function Divider({ label = "Ou" }: { label?: string }) {
   const { theme } = useTheme();
@@ -8,7 +9,7 @@ export default function Divider({ label = "Ou" }: { label?: string }) {
   return (
     <View style={styles.row}>
       <View style={[styles.line, { backgroundColor: theme.borderSoft }]} />
-      <Text style={[styles.text, { color: theme.muted }]}>{label}</Text>
+      <AppText weight="bold" style={[styles.text, { color: theme.muted }]}>{label}</AppText>
       <View style={[styles.line, { backgroundColor: theme.borderSoft }]} />
     </View>
   );
@@ -17,5 +18,5 @@ export default function Divider({ label = "Ou" }: { label?: string }) {
 const styles = StyleSheet.create({
   row: { flexDirection: "row", alignItems: "center", gap: 12, marginVertical: 6 },
   line: { flex: 1, height: 1 },
-  text: { fontSize: 13, fontWeight: "700" },
+  text: { fontSize: 13 },
 });

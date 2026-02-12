@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef } from "react";
 import { View, Text, StyleSheet, Animated, Easing } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { useTheme } from "@/providers/ThemeProvider";
+import AppText from "./AppText";
 
 export type AnimatedItem = {
   id: string;
@@ -71,12 +72,12 @@ export default function AnimatedColumn({
             ]}
           >
             <Feather name={it.icon} size={18} color={theme.primary} style={{ marginBottom: 6 }} />
-            <Text style={[styles.title, { color: theme.chipText }]} numberOfLines={1}>
+            <AppText weight="extrabold" style={[styles.title, { color: theme.chipText }]} numberOfLines={1}>
               {it.title}
-            </Text>
-            <Text style={[styles.sub, { color: theme.chipMuted }]} numberOfLines={1}>
+            </AppText>
+            <AppText italic style={[styles.sub, { color: theme.chipMuted }]} numberOfLines={1}>
               Organisez
-            </Text>
+            </AppText>
           </View>
         ))}
       </Animated.View>
@@ -92,6 +93,6 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     justifyContent: "center",
   },
-  title: { fontSize: 14, fontWeight: "800" },
+  title: { fontSize: 14 },
   sub: { fontSize: 12, marginTop: 2 },
 });

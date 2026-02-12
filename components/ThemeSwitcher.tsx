@@ -4,6 +4,7 @@ import { BlurView } from "expo-blur";
 import { Feather } from "@expo/vector-icons";
 import { useTheme } from "@/providers/ThemeProvider";
 import type { ThemePreference } from "@/constants/theme";
+import AppText from "./ui/AppText";
 
 const OPTIONS: { key: ThemePreference; label: string; icon: keyof typeof Feather.glyphMap }[] = [
   { key: "system", label: "Auto", icon: "cpu" },
@@ -31,9 +32,9 @@ export default function ThemeSwitcher() {
               ]}
             >
               <Feather name={opt.icon} size={16} color={active ? theme.primary : theme.muted} />
-              <Text style={[styles.label, { color: active ? theme.text : theme.muted }]}>
+              <AppText weight="bold" style={[styles.label, { color: active ? theme.text : theme.muted }]}>
                 {opt.label}
-              </Text>
+              </AppText>
             </Pressable>
           );
         })}
@@ -66,6 +67,5 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 13,
-    fontWeight: "700",
   },
 });
