@@ -5,8 +5,8 @@ const AuthLayout = () => {
   return (
     <Stack>
       <Stack.Screen name='index' options={{ headerShown: false }} />
-      {/* <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
-      <Stack.Screen
+      <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
+      {/* <Stack.Screen
         name="(modal)/location"
         options={{
           presentation: 'formSheet',
@@ -14,8 +14,8 @@ const AuthLayout = () => {
           title: '',
           sheetCornerRadius: 16,
         }}
-      />
-      <Stack.Screen
+      /> */}
+      {/* <Stack.Screen
         name="(modal)/filter"
         options={{
           presentation: 'formSheet',
