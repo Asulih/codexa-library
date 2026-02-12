@@ -8,6 +8,7 @@ import ThemeMiniToggle from "@/components/ThemeMiniToggle";
 import { Link, useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import useUserStore from "@/hooks/use-userstore";
+import AppText from "../ui/AppText";
 
 export default function AuthScreen() {
   const { theme } = useTheme();
@@ -37,13 +38,13 @@ export default function AuthScreen() {
       <View style={styles.body}>
         <View style={styles.brand}>
           <Image source={require('@/assets/images/codexaLogo.png')} style={styles.brandLogo} />
-          <Text style={t.h1}>
+          <AppText brand style={t.h1}>
             Code<Text style={{ color: theme.primary }}>xa</Text>
-          </Text>
+          </AppText>
 
-          <Text style={[t.muted, styles.subtitle, { color: theme.muted }]}>
+          <AppText style={[t.muted, styles.subtitle, { color: theme.muted }]}>
             Votre bibliothèque, parfaitement rangée.
-          </Text>
+          </AppText>
         </View>
 
         <View style={styles.actions}>
@@ -57,8 +58,8 @@ export default function AuthScreen() {
           <CodexaSocialButton provider="facebook" onPress={() => Alert.alert("TODO", "Facebook")} />
 
           <Pressable style={({ pressed }) => [styles.loginRow, pressed && { opacity: 0.85 }]} onPress={continueAsGuest}>
-            <Text style={[t.caption, { color: theme.muted }]}>J'ai déjà un compte </Text>
-            <Text style={[t.link, { color: theme.primary }]}>Connexion</Text>
+            <AppText style={[t.caption, { color: theme.muted }]}>J'ai déjà un compte </AppText>
+            <AppText style={[t.link, { color: theme.primary }]}>Connexion</AppText>
           </Pressable>
         </View>
       </View>

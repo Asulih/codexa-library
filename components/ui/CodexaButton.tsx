@@ -2,6 +2,7 @@ import React from "react";
 import { Pressable, StyleSheet, Text, ViewStyle } from "react-native";
 import { useTheme } from "@/providers/ThemeProvider";
 import { typography } from "./Typo";
+import AppText from "./AppText";
 
 type Props = {
   title: string;
@@ -27,9 +28,9 @@ export default function CodexaButton({ title, variant = "primary", onPress, styl
         style,
       ]}
     >
-      <Text style={[t.button, styles.text, { color: primary ? (theme.mode === "dark" ? "#14110f" : "#372e29") : theme.text }]}>
+      <AppText weight="extrabold" style={[t.button, styles.text, { color: primary ? (theme.mode === "dark" ? "#14110f" : "#372e29") : theme.text }]}>
         {title}
-      </Text>
+      </AppText>
     </Pressable>
   );
 }
@@ -41,5 +42,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  text: { fontSize: 16, fontWeight: "800" },
+  text: { fontSize: 16 },
 });

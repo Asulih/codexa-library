@@ -1,6 +1,16 @@
-import { Merienda_400Regular, Merienda_700Bold, Merienda_900Black } from '@expo-google-fonts/merienda';
 import { CormorantGaramond_400Regular, CormorantGaramond_700Bold } from '@expo-google-fonts/cormorant-garamond';
-import { Inter_800ExtraBold, Inter_400Regular, Inter_500Medium, Inter_700Bold } from '@expo-google-fonts/inter';
+import {
+  Inter_400Regular,
+  Inter_400Regular_Italic,
+  Inter_500Medium,
+  Inter_500Medium_Italic,
+  Inter_600SemiBold,
+  Inter_600SemiBold_Italic,
+  Inter_700Bold,
+  Inter_700Bold_Italic,
+  Inter_800ExtraBold,
+  Inter_800ExtraBold_Italic,
+} from '@expo-google-fonts/inter';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useFonts } from 'expo-font';
 import { Slot } from "expo-router";
@@ -18,15 +28,18 @@ const queryClient = new QueryClient({
 
 export default function RootLayout() {
   let [fontsLoaded] = useFonts({
-    Merienda_400Regular,
-    Merienda_700Bold,
-    Merienda_900Black,
     CormorantGaramond_400Regular,
     CormorantGaramond_700Bold,
     Inter_400Regular,
+    Inter_400Regular_Italic,
     Inter_500Medium,
+    Inter_500Medium_Italic,
+    Inter_600SemiBold,
+    Inter_600SemiBold_Italic,
     Inter_700Bold,
+    Inter_700Bold_Italic,
     Inter_800ExtraBold,
+    Inter_800ExtraBold_Italic,
   });
 
   if (!fontsLoaded) return null;

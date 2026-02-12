@@ -4,6 +4,7 @@ import { Pressable, StyleSheet, Text, View, ViewStyle } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { useTheme } from "@/providers/ThemeProvider";
 import { typography } from "./Typo";
+import AppText from "./AppText";
 
 type Provider = "google" | "facebook";
 
@@ -46,9 +47,9 @@ export default function CodexaSocialButton({ provider, onPress, style }: Props) 
       </View>
 
       {/* Centered label */}
-      <Text style={[t.button, styles.text, { color: theme.text }]} numberOfLines={1}>
+      <AppText weight="extrabold" style={[t.button, styles.text, { color: theme.text }]} numberOfLines={1}>
         {meta.title}
-      </Text>
+      </AppText>
 
       {/* Right spacer to keep label centered */}
       <View style={styles.right} />
@@ -72,6 +73,5 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: "center",
     fontSize: 16,
-    fontWeight: "800",
   },
 });
