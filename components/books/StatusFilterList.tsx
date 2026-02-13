@@ -2,6 +2,7 @@ import React, { useMemo, useRef, useCallback } from "react";
 import { FlatList, type FlatList as FlatListType } from "react-native";
 import { FilterChip } from "./FilterChip";
 import { Status } from "@/models/status";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   pagePadding: number;
@@ -16,6 +17,7 @@ export function StatusFilterList({
   selectedStatusId,
   onSelectStatusId,
 }: Props) {
+  const { t } = useTranslation(['books', 'common']);
   const listRef = useRef<FlatListType<any>>(null);
 
   const sortedStatuses = useMemo(
@@ -65,7 +67,7 @@ export function StatusFilterList({
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
         <FilterChip
-          label={item.name}
+          label={t(`books:status.${item.id}`, { defaultValue: t('common:all') })}
           icon={(item as any).icon}
           active={selectedStatusId === item.id}
           onPress={() => select(item.id)}
