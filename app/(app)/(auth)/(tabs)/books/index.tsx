@@ -23,6 +23,7 @@ import { useTagsWithCount } from "@/hooks/useTagsWithCount";
 import { BookCard } from "@/components/books/BookCard";
 import { FiltersBar } from "@/components/books/FiltersBar";
 import AddBookFab from "@/components/AddBookFab";
+import { useFiltersStore } from "@/store/useFiltersStore";
 
 function useColumns(width: number) {
   return width >= 420 ? 3 : 2;
@@ -44,9 +45,13 @@ export default function BooksScreen() {
     return Math.floor((containerWidth - gap * (columns - 1)) / columns);
   }, [width, columns]);
 
-  const [query, setQuery] = useState("");
-  const [selectedStatusId, setSelectedStatusId] = useState<string>("all");
-  const [selectedTagId, setSelectedTagId] = useState<string>("all");
+  const query = useFiltersStore((s) => s.query);
+  const selectedStatusId = useFiltersStore((s) => s.selectedStatusId);
+  const selectedTagId = useFiltersStore((s) => s.selectedTagId);
+
+  const setQuery = useFiltersStore((s) => s.setQuery);
+  const setSelectedStatusId = useFiltersStore((s) => s.setSelectedStatusId);
+  const setSelectedTagId = useFiltersStore((s) => s.setSelectedTagId);
 
   const tagsWithCount = useTagsWithCount(books);
 
