@@ -47,24 +47,13 @@ function BookCardBase({ book, width }: Props) {
         )}
 
         <View style={[styles.badge, { borderColor: theme.borderSoft, backgroundColor: bg }]}>
-          <BlurView
-            intensity={15}
-            tint={theme.mode}
-            style={StyleSheet.absoluteFill}
-          />
-          <View style={styles.badgeRow}>
-            {status?.icon ? (
-                <MaterialCommunityIcons
-                  name={status?.icon}
-                  size={14}
-                  color={theme.text}
-                  style={{ marginRight: 6 }}
-                />
-              ) : null}
-            <AppText weight="semibold" style={{ fontSize: 12, color: theme.text }}>
-              {status?.name ?? "—"}
-            </AppText>
-          </View>
+          {status?.icon ? (
+              <MaterialCommunityIcons
+                name={status?.icon}
+                size={16}
+                color={theme.text}
+              />
+            ) : null}
         </View>
       </View>
 
@@ -99,15 +88,7 @@ const styles = StyleSheet.create({
     borderRadius: 999,
     overflow: "hidden",
     borderWidth: 1,
-    paddingHorizontal: 10,
+    paddingHorizontal: 6,
     paddingVertical: 6,
-    // petit depth
-    shadowOpacity: 0.18,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 2,
   },
-  badgeRow: {
-    flexDirection: 'row'
-  }
 });
