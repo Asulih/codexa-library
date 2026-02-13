@@ -7,11 +7,7 @@ const BooksLayout = () => {
   const { theme } = useTheme();
   return (
     <Stack screenOptions={{ contentStyle: { backgroundColor: theme.bg0 } }}>
-      <Stack.Screen name='index' options={{
-        title: 'My books',
-        headerLargeTitleEnabled: true,
-        headerTransparent: true
-      }}/>
+      <Stack.Screen name='index' options={{ headerShown: false }}/>
     </Stack>
   )
 }

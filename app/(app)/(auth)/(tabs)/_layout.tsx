@@ -5,7 +5,6 @@ const TabLayout = () => {
   return (
     <Tabs screenOptions={{
       tabBarLabelStyle: {
-        fontSize: 9,
         fontWeight: '600'
       }
     }}>
