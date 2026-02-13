@@ -12,7 +12,7 @@ interface RestaurantHeaderProps {
 
 const SCROLL_THRESHOLD = 60;
 
-const RestaurantHeader = ({ title, scrollOffset }: RestaurantHeaderProps) => {
+const BookHeader = ({ title, scrollOffset }: RestaurantHeaderProps) => {
   const insets = useSafeAreaInsets();
 
   const header1Style = useAnimatedStyle(() => {
@@ -117,7 +117,7 @@ const RestaurantHeader = ({ title, scrollOffset }: RestaurantHeaderProps) => {
   )
 }
 
-export default RestaurantHeader
+export default BookHeader
 
 const styles = StyleSheet.create({
   headerContainer: {
