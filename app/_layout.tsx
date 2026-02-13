@@ -16,6 +16,8 @@ import { useFonts } from 'expo-font';
 import { Slot } from "expo-router";
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ThemeProvider } from '@/providers/ThemeProvider';
+import "@/lib/i18n";
+
 
 const queryClient = new QueryClient({
   defaultOptions: {

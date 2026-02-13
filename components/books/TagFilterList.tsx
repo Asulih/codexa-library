@@ -1,6 +1,7 @@
 import React, { useMemo, useRef, useCallback, useState } from "react";
 import { FlatList, type FlatList as FlatListType } from "react-native";
 import { FilterChip } from "./FilterChip";
+import { useTranslation } from "react-i18next";
 
 type TagWithCount = { id: string; name: string; count: number };
 
@@ -21,11 +22,12 @@ export function TagFilterList({
   onSelectTagId,
   maxVisibleTags = 5,
 }: Props) {
+  const { t } = useTranslation(['books', 'common']);
   const listRef = useRef<FlatListType<any>>(null);
   const [expanded, setExpanded] = useState(false);
 
   const allTags = useMemo(() => {
-    return [{ id: "all", name: "Tous", count: booksCount }, ...tags];
+    return [{ id: "all", count: booksCount }, ...tags];
   }, [tags, booksCount]);
 
   const ordered = useMemo(() => {
@@ -62,7 +64,7 @@ export function TagFilterList({
     return [
       allItem,
       ...rest,
-      { id: "__less__", name: "Réduire", count: 0 },
+      { id: "__less__", count: 0 },
     ];
   }, [ordered, expanded, maxVisibleTags]);
 
@@ -102,7 +104,7 @@ export function TagFilterList({
         if (item.id === "__less__") {
           return (
             <FilterChip
-              label="Réduire"
+              label={t("books:tags.minimize")}
               icon="chevron-left"
               active={false}
               onPress={() => setExpanded(false)}
@@ -114,7 +116,10 @@ export function TagFilterList({
           <FilterChip
             label={
               item.id === "all"
-                ? "Tags : Tous"
+                ? t("books:tags.tagsLabelAll", {
+                    tags: t("books:tags.tags"),
+                    all: t("common:all"),
+                  })
                 : `${item.name} · ${item.count}`
             }
             icon="tag"

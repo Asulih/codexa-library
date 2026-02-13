@@ -1,7 +1,9 @@
 import { Feather, MaterialCommunityIcons } from '@expo/vector-icons'
 import { Tabs } from 'expo-router'
+import { useTranslation } from 'react-i18next'
 
 const TabLayout = () => {
+  const { t } = useTranslation(['books', 'profile']);
   return (
     <Tabs screenOptions={{
       tabBarLabelStyle: {
@@ -9,7 +11,7 @@ const TabLayout = () => {
       }
     }}>
       <Tabs.Screen name="books" options={{
-        title: 'My books',
+        title: t('books:mybooks'),
         headerShown: false,
         tabBarIcon: ({color, size, focused}) => (
           <MaterialCommunityIcons
@@ -20,7 +22,7 @@ const TabLayout = () => {
         )
       }} />
       <Tabs.Screen name="discovery" options={{
-        title: 'Discovery',
+        title: t('profile:discovery'),
         tabBarIcon: ({color, size, focused}) => (
           <MaterialCommunityIcons
             name={focused ? "share-variant" : "share-variant-outline"}
@@ -30,7 +32,7 @@ const TabLayout = () => {
         )
       }} />
       <Tabs.Screen name="search" options={{
-        title: 'Search',
+        title: t('profile:search'),
         tabBarIcon: ({color, size, focused}) => (
           <MaterialCommunityIcons
             name={focused ? "book-search" : "book-search-outline"}
@@ -40,7 +42,7 @@ const TabLayout = () => {
         )
       }} />
       <Tabs.Screen name="profile" options={{
-        title: 'Profile',
+        title: t('profile:profile'),
         headerShown: false,
         tabBarIcon: ({color, size, focused}) => (
           <MaterialCommunityIcons

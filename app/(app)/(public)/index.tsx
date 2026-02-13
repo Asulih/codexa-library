@@ -9,10 +9,12 @@ import { Link, useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import useUserStore from "@/hooks/use-userstore";
 import AppText from "@/components/ui/AppText";
+import { useTranslation } from "react-i18next";
 
 export default function AuthScreen() {
+  const { t } = useTranslation(['auth', 'common']);
   const { theme } = useTheme();
-  const t = typography(theme);
+  const typo = typography(theme);
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { setIsGuest } = useUserStore();
@@ -38,28 +40,28 @@ export default function AuthScreen() {
       <View style={styles.body}>
         <View style={styles.brand}>
           <Image source={require('@/assets/images/codexaLogo.png')} style={styles.brandLogo} />
-          <AppText brand style={t.h1}>
+          <AppText brand style={typo.h1}>
             Code<Text style={{ color: theme.primary }}>xa</Text>
           </AppText>
 
-          <AppText style={[t.muted, styles.subtitle, { color: theme.muted }]}>
-            Parce que chaque livre compte.
+          <AppText style={[typo.muted, styles.subtitle, { color: theme.muted }]}>
+            {t('common:slogan')}
           </AppText>
         </View>
 
         <View style={styles.actions}>
           <Link href={'/(app)/(public)/create-account'} asChild>
-            <CodexaButton title="Inscription par email" variant="primary" />
+            <CodexaButton title={t("auth:signinByEmail")} variant="primary" />
           </Link>
 
-          <Divider label="Ou" />
+          <Divider label={t('common:or')} />
 
           <CodexaSocialButton provider="google" onPress={() => Alert.alert("TODO", "Google")} />
           <CodexaSocialButton provider="facebook" onPress={() => Alert.alert("TODO", "Facebook")} />
 
           <Pressable style={({ pressed }) => [styles.loginRow, pressed && { opacity: 0.85 }]} onPress={continueAsGuest}>
-            <AppText style={[t.caption, { color: theme.muted }]}>J'ai déjà un compte </AppText>
-            <AppText style={[t.link, { color: theme.primary }]}>Connexion</AppText>
+            <AppText style={[typo.caption, { color: theme.muted }]}>{t('auth:alreadyHasAccount')} </AppText>
+            <AppText style={[typo.link, { color: theme.primary }]}>{t('auth:login')}</AppText>
           </Pressable>
         </View>
       </View>

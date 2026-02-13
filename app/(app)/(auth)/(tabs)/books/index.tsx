@@ -24,12 +24,14 @@ import { BookCard } from "@/components/books/BookCard";
 import { FiltersBar } from "@/components/books/FiltersBar";
 import AddBookFab from "@/components/AddBookFab";
 import { useFiltersStore } from "@/store/useFiltersStore";
+import { useTranslation } from "react-i18next";
 
 function useColumns(width: number) {
   return width >= 420 ? 3 : 2;
 }
 
 export default function BooksScreen() {
+  const { t } = useTranslation("books");
   const { theme } = useTheme();
   const { width } = useWindowDimensions();
 
@@ -90,7 +92,7 @@ export default function BooksScreen() {
       {/* HEADER */}
       <View style={[styles.header, { paddingHorizontal: pagePadding }]}>
         <AppText weight="extrabold" style={{ fontSize: 28, color: theme.text }}>
-          Mes livres
+          {t('books:mybooks')}
         </AppText>
       </View>
 
@@ -111,7 +113,7 @@ export default function BooksScreen() {
           <TextInput
             value={query}
             onChangeText={setQuery}
-            placeholder="Titre ou auteur..."
+            placeholder={t('books:filters.searchPlaceholder')}
             placeholderTextColor={theme.muted}
             style={[styles.searchInput, { color: theme.text }]}
           />
@@ -128,10 +130,6 @@ export default function BooksScreen() {
         selectedTagId={selectedTagId}
         onSelectTagId={setSelectedTagId}
         maxVisibleTags={5}
-        onPressMoreTags={() => {
-          // plus tard: ouvrir BottomSheet TagPicker
-          // pour l’instant: tu peux no-op
-        }}
       />
 
       {/* GRID */}

@@ -1,0 +1,18 @@
+{
+  "mybooks": "My Books",
+  "filters": {
+    "searchPlaceholder": "Title or author..."
+  },
+  "status": {
+    "status#1": "Wishlist",
+    "status#2": "To Read",
+    "status#3": "In Progress",
+    "status#4": "Read",
+    "status#5": "Abandoned"
+  },
+  "tags": {
+    "tagsLabelAll": "{{tags}}: {{all}}",
+    "tags": "Tags",
+    "minimize": "Minimize"
+  }
+}
