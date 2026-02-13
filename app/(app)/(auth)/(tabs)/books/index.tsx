@@ -122,6 +122,11 @@ export default function BooksScreen() {
         booksCount={books.length}
         selectedTagId={selectedTagId}
         onSelectTagId={setSelectedTagId}
+        maxVisibleTags={5}
+        onPressMoreTags={() => {
+          // plus tard: ouvrir BottomSheet TagPicker
+          // pour l’instant: tu peux no-op
+        }}
       />
 
       {/* GRID */}
