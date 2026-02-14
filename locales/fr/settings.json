@@ -1,5 +1,5 @@
 {
-  "settings": "Réglages",
-  "appearence": "Apparence", 
-  "chooseTheme": "Choisissez le thème de "
+  "title": "Réglages",
+  "appearance": "Apparence",
+  "chooseTheme": "Choisissez le thème de $t(common:brand)"
 }
