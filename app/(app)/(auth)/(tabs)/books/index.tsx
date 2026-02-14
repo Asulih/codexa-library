@@ -92,7 +92,7 @@ export default function BooksScreen() {
       {/* HEADER */}
       <View style={[styles.header, { paddingHorizontal: pagePadding }]}>
         <AppText weight="extrabold" style={{ fontSize: 28, color: theme.text }}>
-          {t('books:mybooks')}
+          {t('books:title')}
         </AppText>
       </View>
 

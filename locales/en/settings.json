@@ -1,1 +1,5 @@
-{}
+{
+  "title": "Settings",
+  "appearance": "Appearance",
+  "chooseTheme": "Choose the theme for $t(common:brand)"
+}

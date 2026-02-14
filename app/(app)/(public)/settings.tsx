@@ -13,10 +13,10 @@ export default function SettingsScreen() {
   return (
     <Screen>
       <View style={styles.container}>
-        <AppText style={[styles.title, { color: theme.text }]}>{t('settings:settings')}</AppText>
+        <AppText style={[styles.title, { color: theme.text }]}>{t('settings:title')}</AppText>
 
         <CodexaCard style={{ marginTop: 14 }}>
-          <AppText style={[styles.sectionTitle, { color: theme.text }]}>{t('settings:appearence')}</AppText>
+          <AppText style={[styles.sectionTitle, { color: theme.text }]}>{t('settings:appearance')}</AppText>
           <AppText style={[styles.sectionSub, { color: theme.muted }]}>
             {t('settings:chooseTheme')} Codexa.
           </AppText>

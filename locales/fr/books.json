@@ -1,18 +1,18 @@
 {
-  "mybooks": "Mes livres",
+  "title": "Mes livres",
   "filters": {
     "searchPlaceholder": "Titre ou auteur..."
   },
   "status": {
-    "status#1": "Liste d'envies",
+    "status#1": "Liste d’envies",
     "status#2": "À lire",
     "status#3": "En cours",
     "status#4": "Lu",
     "status#5": "Abandonné"
   },
   "tags": {
-    "tagsLabelAll": "{{tags}}: {{all}}",
-    "tags": "Étiquettes",
-    "minimize": "Réduire"
+    "title": "Étiquettes",
+    "minimize": "Réduire",
+    "labelAll": "$t(tags.title) : $t(common:all)"
   }
 }
