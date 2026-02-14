@@ -14,5 +14,6 @@
     "title": "Étiquettes",
     "minimize": "Réduire",
     "labelAll": "$t(tags.title) : $t(common:all)"
-  }
+  },
+  "add": "Ajouter un livre"
 }

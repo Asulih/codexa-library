@@ -1,5 +1,5 @@
 import React, { memo, useMemo } from "react";
-import { View, StyleSheet, Image, Platform } from "react-native";
+import { View, StyleSheet, Image, Platform, ViewStyle } from "react-native";
 import { BlurView } from "expo-blur";
 import AppText from "@/components/ui/AppText";
 import { useTheme } from "@/providers/ThemeProvider";
@@ -26,16 +26,21 @@ function BookCardBase({ book, width }: Props) {
   const status = statusById.get(book.statusId);
   const bg = STATUS_BADGE_BG[book.statusId] ?? "rgba(0,0,0,0.45)";
 
+  const coverStyle = useMemo(() => {
+    return {
+      width: '100%',
+      aspectRatio: 2 / 3,
+      borderColor: theme.borderSoft,
+      shadowColor: theme.shadowColor,
+    } as ViewStyle
+  }, [theme]);
+
   return (
     <View style={{ width }}>
       <View
         style={[
           styles.cover,
-          {
-            height: coverHeight,
-            borderColor: theme.borderSoft,
-            shadowColor: theme.shadowColor,
-          },
+          coverStyle,
         ]}
       >
         {!!book.cover && (

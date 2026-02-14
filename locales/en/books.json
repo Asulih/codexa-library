@@ -14,5 +14,6 @@
     "title": "Tags",
     "minimize": "Minimize",
     "labelAll": "$t(tags.title): $t(common:all)"
-  }
+  },
+  "add": "Add a book"
 }
