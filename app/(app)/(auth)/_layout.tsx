@@ -1,7 +1,9 @@
+import { useTheme } from '@/providers/ThemeProvider';
 import { Stack } from 'expo-router';
 
 const AuthLayout = () => {
-  
+  const { theme } = useTheme();
+
   return (
     <Stack>
       <Stack.Screen name='index' options={{ headerShown: false }} />
@@ -15,16 +17,16 @@ const AuthLayout = () => {
           sheetCornerRadius: 16,
         }}
       /> */}
-      {/* <Stack.Screen
+      <Stack.Screen
         name="(modal)/filter"
         options={{
           presentation: 'formSheet',
           sheetAllowedDetents: [0.7],
           title: '',
           sheetCornerRadius: 16,
-          contentStyle: {backgroundColor: '#fff'}
+          contentStyle: { backgroundColor: theme.bg0 }
         }}
-      /> */}
+      />
     </Stack>
   )
 }

@@ -6,8 +6,9 @@ import {
   Platform,
   TextInput,
   useWindowDimensions,
+  TouchableOpacity,
 } from "react-native";
-import { Feather } from "@expo/vector-icons";
+import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
 
 import { Screen } from "@/components/ui";
@@ -25,6 +26,8 @@ import { FiltersBar } from "@/components/books/FiltersBar";
 import AddBookFab from "@/components/AddBookFab";
 import { useFiltersStore } from "@/store/useFiltersStore";
 import { useTranslation } from "react-i18next";
+import { Link } from "expo-router";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 function useColumns(width: number) {
   return width >= 420 ? 3 : 2;
@@ -34,6 +37,7 @@ export default function BooksScreen() {
   const { t } = useTranslation("books");
   const { theme } = useTheme();
   const { width } = useWindowDimensions();
+  const insets = useSafeAreaInsets();
 
   const books = useBooksStore((s) => s.books);
 
@@ -87,17 +91,20 @@ export default function BooksScreen() {
     [cardWidth]
   );
 
+  const idleBg =
+    theme.mode === "dark" ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0.65)";
+
   return (
     <Screen>
       {/* HEADER */}
-      <View style={[styles.header, { paddingHorizontal: pagePadding }]}>
+      <View style={[styles.header, { paddingTop: insets.top, paddingHorizontal: pagePadding }]}>
         <AppText weight="extrabold" style={{ fontSize: 28, color: theme.text }}>
           {t('books:title')}
         </AppText>
       </View>
 
       {/* SEARCH */}
-      <View style={{ paddingHorizontal: pagePadding, marginTop: 12 }}>
+      <View style={{ flexDirection: 'row', paddingHorizontal: pagePadding, marginTop: 12, alignItems: 'center', justifyContent: 'space-between' }}>
         <View style={[styles.searchWrap, { borderColor: theme.borderSoft }]}>
           <BlurView
             intensity={theme.mode === "dark" ? 18 : 14}
@@ -118,6 +125,16 @@ export default function BooksScreen() {
             style={[styles.searchInput, { color: theme.text }]}
           />
         </View>
+        
+        <Link href={'/(app)/(auth)/(modal)/filter'} asChild
+          style={[
+            styles.filterButton,
+            { backgroundColor: idleBg, borderColor: theme.borderSoft, shadowColor: theme.shadowColor }
+          ]} >
+          <TouchableOpacity>
+            <Ionicons name='filter' size={20} color={theme.muted}/>
+          </TouchableOpacity>
+        </Link>
       </View>
 
       <FiltersBar
@@ -162,8 +179,25 @@ export default function BooksScreen() {
 const styles = StyleSheet.create({
   header: {
     paddingTop: Platform.OS === "android" ? 18 : 22,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  filterButton: {
+    height: 50,
+    borderRadius: 16,
+    paddingHorizontal: 12,
+    borderWidth: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+
+    // iOS shadow doux
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 6 },
   },
   searchWrap: {
+    width: '85%',
     height: 50,
     borderRadius: 16,
     borderWidth: 1,
@@ -175,5 +209,6 @@ const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     fontSize: 15,
+    width: '100%'
   },
 });
