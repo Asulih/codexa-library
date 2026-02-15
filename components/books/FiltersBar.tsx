@@ -15,8 +15,11 @@ type Props = {
 
   tags: TagWithCount[];
   booksCount: number;
-  selectedTagId: string;
-  onSelectTagId: (id: string) => void;
+
+  // ✅ Multi-select tags
+  selectedTagIds: string[];
+  onToggleTagId: (id: string) => void;
+  onClearTags: () => void;
 
   maxVisibleTags?: number;
 };
@@ -38,8 +41,9 @@ export function FiltersBar(props: Props) {
           pagePadding={props.pagePadding}
           tags={props.tags}
           booksCount={props.booksCount}
-          selectedTagId={props.selectedTagId}
-          onSelectTagId={props.onSelectTagId}
+          selectedTagIds={props.selectedTagIds}
+          onToggleTagId={props.onToggleTagId}
+          onClearTags={props.onClearTags}
           maxVisibleTags={props.maxVisibleTags}
         />
       </View>

@@ -11,7 +11,7 @@ import {
 import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
 
-import { Screen } from "@/components/ui";
+import { Divider, Screen } from "@/components/ui";
 import AppText from "@/components/ui/AppText";
 import { useTheme } from "@/providers/ThemeProvider";
 
@@ -53,11 +53,12 @@ export default function BooksScreen() {
 
   const query = useFiltersStore((s) => s.query);
   const selectedStatusId = useFiltersStore((s) => s.selectedStatusId);
-  const selectedTagId = useFiltersStore((s) => s.selectedTagId);
+  const selectedTagIds = useFiltersStore((s) => s.selectedTagIds);
 
   const setQuery = useFiltersStore((s) => s.setQuery);
   const setSelectedStatusId = useFiltersStore((s) => s.setSelectedStatusId);
-  const setSelectedTagId = useFiltersStore((s) => s.setSelectedTagId);
+  const toggleTagId = useFiltersStore((s) => s.toggleTagId);
+  const clearTags = useFiltersStore((s) => s.clearTags);
 
   const tagsWithCount = useTagsWithCount(books);
 
@@ -68,8 +69,11 @@ export default function BooksScreen() {
       list = list.filter((b) => b.statusId === selectedStatusId);
     }
 
-    if (selectedTagId !== "all") {
-      list = list.filter((b) => (b.tagIds ?? []).includes(selectedTagId));
+    if (selectedTagIds.length > 0) {
+      list = list.filter((b) => {
+        const ids = b.tagIds ?? [];
+        return selectedTagIds.some((id) => ids.includes(id));
+      });
     }
 
     const q = query.trim().toLowerCase();
@@ -84,7 +88,7 @@ export default function BooksScreen() {
     }
 
     return list;
-  }, [books, query, selectedStatusId, selectedTagId]);
+  }, [books, query, selectedStatusId, selectedTagIds]);
 
   const renderBook = useCallback(
     ({ item }: { item: Book }) => <BookCard book={item} width={cardWidth} />,
@@ -136,7 +140,7 @@ export default function BooksScreen() {
           </TouchableOpacity>
         </Link>
       </View>
-
+      
       <FiltersBar
         pagePadding={pagePadding}
         statuses={statuses}
@@ -144,10 +148,12 @@ export default function BooksScreen() {
         onSelectStatusId={setSelectedStatusId}
         tags={tagsWithCount}
         booksCount={books.length}
-        selectedTagId={selectedTagId}
-        onSelectTagId={setSelectedTagId}
+        selectedTagIds={selectedTagIds}
+        onToggleTagId={toggleTagId}
+        onClearTags={clearTags}
         maxVisibleTags={5}
       />
+
 
       {/* GRID */}
       <FlatList

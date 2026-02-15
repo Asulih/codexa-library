@@ -1,42 +1,3 @@
-export const Colors = {
-  primary: "#ecb939",
-  warning: "#eb5555",
-  disabled: "#cfccca",
-  pale: '#e6e6e6',
-  black: '#000000',
-
-
-  light: {
-    text: '#6d6158',
-    title: "#38302c",
-    background: "#f5edca",
-    navBackground: "#726255",
-    iconColor: "#372e29",
-    iconColorFocused: "#ecb939",
-    uiBackground: "#f0d79a",
-  },
-  dark: {
-    text: '#d4d4d4',
-    title: "#fff",
-    background: "#38302c",
-    navBackground: "#312925",
-    iconColor: "#f0d79a",
-    iconColorFocused: "#ecb939",
-    uiBackground: "#6d6158",
-  },
-}
-
-export const Fonts = {
-  brand: 'Merienda',
-  brandLight: 'Merienda_300Light',
-  brandRegular: 'Merienda_400Regular',
-  brandMedium: 'Merienda_500Medium',
-  brandSemiBold: 'Merienda_600SemiBold',
-  brandBold: 'Merienda_700Bold',
-  brandExtraBold: 'Merienda_800ExtraBold',
-  brandBlack: 'Merienda_900Black',
-};
-
 export const palette = {
   gold: "#ecb939",
   gold2: "#f0c75e",
@@ -51,6 +12,12 @@ export const palette = {
   night0: "#14110f",
   night1: "#1b1613",
   night2: "#231c17",
+
+  // 🔴 Couleurs d’erreur
+  error: "#d9534f",       // rouge-terreux (par défaut)
+  error2: "#c85e54",      // plus doux, plus chaud
+  errorLight: "#f8d7da",  // fond clair pour les erreurs (mode clair)
+  errorDark: "#5c2e2e",   // fond sombre pour les erreurs (mode sombre)
 };
 
 export type ThemeMode = "light" | "dark";
@@ -76,6 +43,10 @@ export type Theme = {
 
   chipText: string;
   chipMuted: string;
+
+  error: string;
+  errorBg: string;
+  errorBorder: string;
 };
 
 // ✅ IMPORTANT: export nommé (pas default)
@@ -100,6 +71,10 @@ export function makeTheme(mode: ThemeMode): Theme {
 
       chipText: "#f7f0df",
       chipMuted: "rgba(247,240,223,0.72)",
+
+      error: "#d9534f",
+      errorBg: "rgba(217,83,79,0.2)",
+      errorBorder: "#d9534f",
     };
   }
 
@@ -122,5 +97,9 @@ export function makeTheme(mode: ThemeMode): Theme {
 
     chipText: palette.ink,
     chipMuted: "rgba(55,46,41,0.70)",
+
+    error: "#d9534f",
+    errorBg: "rgba(248,215,218,0.8)",
+    errorBorder: "#d9534f",
   };
 }
