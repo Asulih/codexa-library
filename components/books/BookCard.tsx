@@ -4,27 +4,18 @@ import { BlurView } from "expo-blur";
 import AppText from "@/components/ui/AppText";
 import { useTheme } from "@/providers/ThemeProvider";
 import type { Book } from "@/models/book";
-import { statuses } from "@/models/status";
+import { statuses, StatusId } from "@/models/status";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 type Props = { book: Book; width: number };
 
 // Lookup map au top-level (pas un hook)
 const statusById = new Map(statuses.map((s) => [s.id, s]));
-const STATUS_BADGE_BG: Record<string, string> = {
-  "status#1": "rgba(114,98,85,0.92)",   // wishlist - mocha (#726255)
-  "status#2": "rgba(236,185,57,0.95)",  // to read - gold (#ecb939)
-  "status#3": "rgba(199,97,54,0.92)",   // in progress - copper/terracotta
-  "status#4": "rgba(88,139,110,0.92)",  // read - sage green
-  "status#5": "rgba(120,62,52,0.92)",   // abandoned - wine/brick
-};
 
 function BookCardBase({ book, width }: Props) {
   const { theme } = useTheme();
-  const coverHeight = useMemo(() => Math.round(width * 1.4), [width]);
 
-  const status = statusById.get(book.statusId);
-  const bg = STATUS_BADGE_BG[book.statusId] ?? "rgba(0,0,0,0.45)";
+  const status = statusById.get(book.statusId as StatusId);
 
   const coverStyle = useMemo(() => {
     return {
@@ -51,7 +42,7 @@ function BookCardBase({ book, width }: Props) {
           />
         )}
 
-        <View style={[styles.badge, { borderColor: theme.borderSoft, backgroundColor: bg }]}>
+        <View style={[styles.badge, { borderColor: theme.borderSoft, backgroundColor: status?.color }]}>
           {status?.icon ? (
               <MaterialCommunityIcons
                 name={status?.icon}

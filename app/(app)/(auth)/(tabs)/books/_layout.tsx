@@ -8,6 +8,8 @@ const BooksLayout = () => {
   return (
     <Stack screenOptions={{ contentStyle: { backgroundColor: theme.bg0 } }}>
       <Stack.Screen name='index' options={{ headerShown: false }}/>
+      <Stack.Screen name='[id]' options={{ headerShown: false }}/>
+      <Stack.Screen name='add-book' options={{ headerShown: false }}/>
     </Stack>
   )
 }

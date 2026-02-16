@@ -26,7 +26,7 @@ import { FiltersBar } from "@/components/books/FiltersBar";
 import AddBookFab from "@/components/AddBookFab";
 import { useFiltersStore } from "@/store/useFiltersStore";
 import { useTranslation } from "react-i18next";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { BookRow } from "@/components/books/BookRow";
 
@@ -61,7 +61,6 @@ export default function BooksScreen() {
   const setSelectedStatusId = useFiltersStore((s) => s.setSelectedStatusId);
   const toggleTagId = useFiltersStore((s) => s.toggleTagId);
   const clearTags = useFiltersStore((s) => s.clearTags);
-  const setDisplayMode = useFiltersStore((s) => s.setDisplayMode);
 
   const isGrid = displayMode === 'cover';
 
@@ -133,7 +132,13 @@ export default function BooksScreen() {
       </View>
 
       {/* SEARCH */}
-      <View style={{ flexDirection: 'row', paddingHorizontal: pagePadding, marginTop: 12, alignItems: 'center', justifyContent: 'space-between' }}>
+      <View style={{
+        flexDirection: 'row',
+        paddingHorizontal: pagePadding,
+        marginTop: 12,
+        alignItems: 'center',
+        justifyContent: 'space-between'
+      }}>
         <View style={[styles.searchWrap, { borderColor: theme.borderSoft }]}>
           <BlurView
             intensity={theme.mode === "dark" ? 18 : 14}
@@ -202,7 +207,7 @@ export default function BooksScreen() {
         updateCellsBatchingPeriod={50}
       />
 
-      <AddBookFab />
+      <AddBookFab onPress={() => router.push('/books/add-book')}/>
     </Screen>
   );
 }

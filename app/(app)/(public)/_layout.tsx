@@ -1,13 +1,13 @@
-import { useThemeColor } from '@/hooks/use-theme-color';
+import { useTheme } from '@/providers/ThemeProvider';
 import { Stack } from 'expo-router'
 
 const PublicLayout = () => {
-  const backgroundColor = useThemeColor('background');
+  const { theme } = useTheme();
   return (
     <Stack>
       <Stack.Screen name='index' options={{
         headerShown: false,
-        contentStyle: { backgroundColor }
+        contentStyle: { backgroundColor: theme.bg0 }
         }} />
       <Stack.Screen name='create-account' options={{
         headerShown: false,

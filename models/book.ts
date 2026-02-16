@@ -1,3 +1,4 @@
+import { ImageSourcePropType } from "react-native";
 import { Status } from "./status";
 import { Tag } from "./tag";
 import { User } from "./user";
@@ -12,7 +13,7 @@ export interface Book {
   authors?: string[];
   publisher?: string;
   summary?: string;
-  cover?: any;
+  cover?: ImageSourcePropType;
   tagIds: string[];
   statusId: string;
   userId: string;
