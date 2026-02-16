@@ -1,18 +1,23 @@
 // components/ui/TagAutocompleteInput.tsx
 import React, { useMemo, useRef, useState, useCallback } from "react";
-import { View, TextInput, StyleSheet, FlatList, Keyboard, ScrollView } from "react-native";
-import TagSuggestionItem from "./TagSuggestionItem";
+import { View, TextInput, StyleSheet, ScrollView, Pressable } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import AppText from "@/components/ui/AppText";
 import { useTheme } from "@/providers/ThemeProvider";
 import type { Tag } from "@/models/tag";
 import { useFiltersStore } from "@/store/useFiltersStore";
 
 type TagAutocompleteInputProps = {
-  tags: Tag[]; // all available tags
-  selectedTags: string[]; // selected tag ids
+  tags: Tag[];
+  selectedTags: string[];
   placeholder?: string;
-  minChars?: number; // ✅ default 2
-  maxResults?: number; // ✅ default 10-12
+  minChars?: number;
+  maxResults?: number;
 };
+
+const ITEM_HEIGHT = 42;
+const MAX_VISIBLE_ITEMS = 5;
+const DROPDOWN_MAX_HEIGHT = ITEM_HEIGHT * MAX_VISIBLE_ITEMS + 40; // + header
 
 const TagAutocompleteInput = ({
   tags,
@@ -33,10 +38,8 @@ const TagAutocompleteInput = ({
   const normalized = query.trim().toLowerCase();
   const shouldShowSuggestions = focused && normalized.length >= minChars;
 
-  // Filter tags only when suggestions should be visible
   const filteredTags = useMemo(() => {
     if (!shouldShowSuggestions) return [];
-
     const selectedSet = new Set(selectedTags);
 
     return tags
@@ -49,17 +52,25 @@ const TagAutocompleteInput = ({
       .slice(0, maxResults);
   }, [tags, selectedTags, normalized, shouldShowSuggestions, maxResults]);
 
-  const handleSelect = useCallback(
+  const onSelectTag = useCallback(
     (tagId: string) => {
-      addTagId(tagId);
+      selectingRef.current = true;
 
-      // Clear input and keep focus (your current UX)
+      addTagId(tagId);
       setQuery("");
-      // Keep the keyboard open and input focused:
+
+      // garde focus + clavier
       requestAnimationFrame(() => inputRef.current?.focus());
+
+      setTimeout(() => {
+        selectingRef.current = false;
+      }, 0);
     },
     [addTagId]
   );
+
+  const activeBg =
+    theme.mode === "dark" ? "rgba(236,185,57,0.10)" : "rgba(236,185,57,0.12)";
 
   return (
     <View style={styles.container}>
@@ -71,6 +82,7 @@ const TagAutocompleteInput = ({
             backgroundColor: theme.surfaceA,
             borderColor: theme.borderSoft,
             color: theme.text,
+            shadowColor: theme.shadowColor,
           },
         ]}
         placeholder={placeholder}
@@ -79,7 +91,6 @@ const TagAutocompleteInput = ({
         onChangeText={setQuery}
         onFocus={() => setFocused(true)}
         onBlur={() => {
-          // If the blur comes from tapping a suggestion, ignore it
           if (selectingRef.current) {
             requestAnimationFrame(() => inputRef.current?.focus());
             return;
@@ -91,43 +102,73 @@ const TagAutocompleteInput = ({
         returnKeyType="done"
       />
 
-      {/* Suggestions: only when >= minChars and focused */}
-      {shouldShowSuggestions && filteredTags.length > 0 && (
+      {/* Dropdown */}
+      {shouldShowSuggestions && (
         <View
           style={[
             styles.suggestions,
-            { backgroundColor: theme.surfaceA, borderColor: theme.borderSoft },
+            {
+              backgroundColor: theme.surfaceA,
+              borderColor: theme.borderSoft,
+              shadowColor: theme.shadowColor,
+            },
           ]}
         >
-          <ScrollView
-            keyboardShouldPersistTaps="handled"
-            nestedScrollEnabled
-          >
-            {filteredTags.map((tag) => (
-              <TagSuggestionItem
-                key={tag.id}
-                tag={tag}
-                onSelect={() => {
-                  selectingRef.current = true;
-                  addTagId(tag.id);
-                  setQuery("");
-                  inputRef.current?.focus();
+          {/* Header */}
+          <View style={[styles.dropdownHeader, { borderBottomColor: theme.borderSoft }]}>
+            <AppText style={{ color: theme.chipMuted, fontSize: 12 }}>
+              Suggestions
+            </AppText>
+            <AppText style={{ color: theme.chipMuted, fontSize: 12 }}>
+              {filteredTags.length}/{maxResults}
+            </AppText>
+          </View>
 
-                  setTimeout(() => {
-                    selectingRef.current = false;
-                  }, 0);
-                }}
-              />
-            ))}
-          </ScrollView>
-        </View>
-      )}
+          {filteredTags.length > 0 ? (
+            <ScrollView
+              keyboardShouldPersistTaps="always"
+              nestedScrollEnabled
+              showsVerticalScrollIndicator={false}
+              style={{ maxHeight: DROPDOWN_MAX_HEIGHT }}
+              contentContainerStyle={{ paddingVertical: 6 }}
+            >
+              {filteredTags.map((tag, idx) => (
+                <Pressable
+                  key={tag.id}
+                  onPress={() => onSelectTag(tag.id)}
+                  style={({ pressed }) => [
+                    styles.suggestionRow,
+                    {
+                      backgroundColor: pressed ? activeBg : "transparent",
+                    },
+                  ]}
+                >
+                  <AppText numberOfLines={1} style={{ color: theme.text, fontSize: 12, lineHeight: 16 }}>
+                    {tag.name}
+                  </AppText>
 
-      {/* Optional hint when focused but too short */}
-      {focused && normalized.length > 0 && normalized.length < minChars && (
-        <View style={{ marginTop: 6 }}>
-          {/* If you want, replace with AppText for consistent typography */}
-          {/* Example: <AppText style={{ color: theme.muted, fontSize: 12 }}>Tape au moins {minChars} caractères…</AppText> */}
+                  <Ionicons name="add" size={18} color={theme.muted} />
+
+                  {/* Separator */}
+                  {idx !== filteredTags.length - 1 && (
+                    <View
+                      pointerEvents="none"
+                      style={[
+                        styles.separator,
+                        { backgroundColor: theme.mode === "dark" ? "rgba(255,240,210,0.08)" : "rgba(55,46,41,0.08)" },
+                      ]}
+                    />
+                  )}
+                </Pressable>
+              ))}
+            </ScrollView>
+          ) : (
+            <View style={{ padding: 12 }}>
+              <AppText style={{ color: theme.chipMuted, fontSize: 13 }}>
+                Aucun résultat
+              </AppText>
+            </View>
+          )}
         </View>
       )}
     </View>
@@ -137,17 +178,20 @@ const TagAutocompleteInput = ({
 const styles = StyleSheet.create({
   container: {
     position: "relative",
+    paddingTop: 8,
+    paddingBottom: 16,
   },
   input: {
     borderWidth: 1,
-    borderRadius: 12,
-    paddingHorizontal: 16,
+    borderRadius: 16,
+    paddingHorizontal: 14,
     paddingVertical: 12,
-    fontSize: 16,
-    shadowColor: "rgba(0,0,0,0.1)",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
+    fontSize: 15,
+
+    // shadow douce
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.10,
+    shadowRadius: 14,
     elevation: 2,
   },
   suggestions: {
@@ -155,17 +199,39 @@ const styles = StyleSheet.create({
     top: "100%",
     left: 0,
     right: 0,
-    borderWidth: 1,
-    borderRadius: 12,
     marginTop: 8,
-    maxHeight: 200,
-    overflow: "hidden", // ✅ important (not 'scroll')
+    borderWidth: 1,
+    borderRadius: 16,
+    overflow: "hidden",
     zIndex: 10,
-    shadowColor: "rgba(0,0,0,0.1)",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 2,
+
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.16,
+    shadowRadius: 18,
+    elevation: 3,
+  },
+  dropdownHeader: {
+    paddingHorizontal: 14,
+    paddingTop: 10,
+    paddingBottom: 8,
+    borderBottomWidth: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  suggestionRow: {
+    height: 42,
+    paddingHorizontal: 14,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  separator: {
+    position: "absolute",
+    left: 14,
+    right: 14,
+    bottom: 0,
+    height: 1,
   },
 });
 

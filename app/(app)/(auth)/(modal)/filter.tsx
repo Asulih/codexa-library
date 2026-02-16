@@ -1,20 +1,20 @@
 import { Divider, Spacer } from '@/components/ui';
 import AppText from '@/components/ui/AppText';
 import { useTheme } from '@/providers/ThemeProvider';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { Button, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useFiltersStore } from '@/store/useFiltersStore';
 import RadioButtonGroup from '@/components/ui/RadioButtonGroup';
-import SegmentControl from '@/components/ui/SegmentControl';
+import SegmentControl, { type Segment } from '@/components/ui/SegmentControl';
 import { StatusFilterList } from '@/components/books/StatusFilterList';
 import { statuses } from '@/models/status';
 import TagAutocompleteInput from '@/components/ui/TagAutoComplete';
 import { tags } from '@/models/tag';
-import { FilterChip } from '@/components/books/FilterChip';
 import TagFilterChip from '@/components/ui/TagFilterChip';
+import type { DisplayMode } from "@/store/useFiltersStore";
 
 const FiltersPage = () => {
   const { theme } = useTheme();
@@ -36,7 +36,9 @@ const FiltersPage = () => {
 
   const setSelectedStatusId = useFiltersStore((s) => s.setSelectedStatusId);
   const selectedDisplayId = useFiltersStore((s) => s.selectedDisplayId);
-  const setSelectedDisplayId = useFiltersStore((s) => s.setSelectedDisplayId);
+  const setDisplayMode = useFiltersStore((s) => s.setDisplayMode);
+
+  const resetFilters = useFiltersStore((s) => s.resetFilters);
 
   const sortOptions = [
     { label: 'Titre (A→Z)', value: 'title_asc' },
@@ -45,9 +47,9 @@ const FiltersPage = () => {
     { label: 'Date (↓)', value: 'date_desc' },
   ];
 
-  const displayOptions = [
-    { label: 'Couverture', icon: 'grid' as keyof typeof Ionicons.glyphMap, value: 'cover' },
-    { label: 'Détail', icon: 'list' as keyof typeof Ionicons.glyphMap, value: 'detail' },
+  const displayOptions: Segment<DisplayMode>[] = [
+    { label: "Couverture", icon: "grid-outline", value: "cover" },
+    { label: "Liste", icon: "list-outline", value: "list" },
   ];
 
   useEffect(() => {
@@ -62,6 +64,9 @@ const FiltersPage = () => {
   return (
     <View style={[styles.container]}>
       <Animated.View style={styles.header} entering={FadeInDown.delay(100)}>
+        <TouchableOpacity style={styles.closeBtn} onPress={() => {resetFilters()}}>
+          <MaterialCommunityIcons name="filter-remove" size={24} />
+        </TouchableOpacity>
         <AppText weight="bold" style={{ fontSize: 18, color: theme.text }}>Filters</AppText>
         <TouchableOpacity style={styles.closeBtn} onPress={() => {router.dismiss()}}>
           <Ionicons name="close" size={24} />
@@ -94,14 +99,14 @@ const FiltersPage = () => {
             <SegmentControl 
               segments={displayOptions}
               selectedValue={selectedDisplayId}
-              onValueChange={setSelectedDisplayId}
+              onValueChange={setDisplayMode}
             />
           </View>
         </Animated.View>
 
         <Animated.View entering={FadeInDown.delay(300)}>
           <Divider label='Status' />
-          <View>
+          <View style={{ paddingBottom: 16 }}>
             <StatusFilterList
               pagePadding={0}
               statuses={statuses}
@@ -151,6 +156,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+  },
+  resetBtn: {
+    paddingVertical: 6,
+    paddingHorizontal: 8,
+    borderRadius: 12,
   },
   closeBtn: {
     padding: 4,

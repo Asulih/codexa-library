@@ -1,54 +1,64 @@
 // components/ui/SegmentControl.tsx
-import React from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
-import SegmentButton from './SegmentButton';
-import { useTheme } from '@/providers/ThemeProvider';
-import { Ionicons } from '@expo/vector-icons';
+import React, { useMemo } from "react";
+import { View, StyleSheet, useWindowDimensions } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import SegmentButton from "./SegmentButton";
 
-type SegmentControlProps = {
-  segments: { label: string; icon: keyof typeof Ionicons.glyphMap, value: string }[];
-  selectedValue: string;
-  onValueChange: (value: string) => void;
+export type Segment<T extends string> = {
+  label: string;
+  icon: keyof typeof Ionicons.glyphMap;
+  value: T;
 };
 
-const SegmentControl = ({ segments, selectedValue, onValueChange }: SegmentControlProps) => {
-  const { theme } = useTheme();
-  const screenWidth = Dimensions.get('window').width;
-  const itemWidth = (screenWidth - 32 - (segments.length - 1) * 4) / segments.length; // 32 = padding, 4 = gap
+type SegmentControlProps<T extends string> = {
+  segments: Segment<T>[];
+  selectedValue: T;
+  onValueChange: (value: T) => void;
+  gap?: number;
+};
+
+export default function SegmentControl<T extends string>({
+  segments,
+  selectedValue,
+  onValueChange,
+  gap = 0,
+}: SegmentControlProps<T>) {
+  const { width } = useWindowDimensions();
+
+  // largeur dispo approximative : tu peux adapter si tu veux
+  const containerPadding = 0;
+  const containerWidth = width - containerPadding * 2;
+
+  const segmentWidth = useMemo(() => {
+    const count = Math.max(1, segments.length);
+    const totalGap = gap * (count - 1);
+    return Math.floor((containerWidth - totalGap) / count);
+  }, [containerWidth, segments.length, gap]);
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.surfaceA, borderColor: theme.borderSoft }]}>
-      {segments.map((segment, index) => (
-        <SegmentButton
-          key={segment.value}
-          label={segment.label}
-          icon={segment.icon}
-          value={segment.value}
-          selected={selectedValue === segment.value}
+    <View style={[styles.row, gap ? { gap } : null]}>
+      {segments.map((s, idx) => (
+        <SegmentButton<T>
+          key={s.value}
+          label={s.label}
+          icon={s.icon}
+          value={s.value}
+          selected={selectedValue === s.value}
           onSelect={onValueChange}
-          width={itemWidth}
-          isFirst={index === 0}
-          isLast={index === segments.length - 1}
+          width={segmentWidth}
+          isFirst={idx === 0}
+          isLast={idx === segments.length - 1}
         />
       ))}
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    borderRadius: 20,
-    borderWidth: 1,
-    overflow: 'hidden',
-    marginHorizontal: 16,
-    marginTop: 16,
-    shadowColor: 'rgba(0,0,0,0.1)',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 2,
+  row: {
+    paddingTop: 8,
+    paddingBottom: 16,
+    flexDirection: "row",
+    alignItems: "stretch",
   },
 });
-
-export default SegmentControl;
