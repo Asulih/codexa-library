@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
+    zIndex: 999,
 
     // shadow plus discrète
     shadowOpacity: 0.12,

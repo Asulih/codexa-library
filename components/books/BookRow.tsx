@@ -4,7 +4,7 @@ import { View, StyleSheet, Image, Platform, ViewStyle } from "react-native";
 import AppText from "@/components/ui/AppText";
 import { useTheme } from "@/providers/ThemeProvider";
 import type { Book } from "@/models/book";
-import { statuses } from "@/models/status";
+import { statuses, StatusId } from "@/models/status";
 import { FilterChip } from "./FilterChip";
 import i18n from "@/lib/i18n";
 import { formatDate } from "@/utils/formatDate";
@@ -26,8 +26,7 @@ type Props = {
 function BookRowBase({ book }: Props) {
   const { theme } = useTheme();
 
-  const status = statusById.get(book.statusId);
-  const badgeBg = STATUS_BADGE_BG[book.statusId] ?? "rgba(0,0,0,0.45)";
+  const status = statusById.get(book.statusId as StatusId);
 
   const coverStyle = useMemo(() => {
     return {
@@ -91,7 +90,7 @@ function BookRowBase({ book }: Props) {
                 label={status.name}
                 active
                 icon={status.icon}
-                backgroundColor={badgeBg}
+                backgroundColor={status?.color}
                 iconColor='#000'
               />
             </View>
