@@ -1,8 +1,9 @@
 import React, { useMemo, useRef, useCallback } from "react";
 import { FlatList, type FlatList as FlatListType } from "react-native";
 import { FilterChip } from "./FilterChip";
-import { Status } from "@/models/status";
+import { Status, STATUS_ALL_ID } from "@/models/status";
 import { useTranslation } from "react-i18next";
+import { withAlpha } from "@/utils/color";
 
 type Props = {
   pagePadding: number;
@@ -20,29 +21,30 @@ export function StatusFilterList({
   const { t } = useTranslation(['books', 'common']);
   const listRef = useRef<FlatListType<any>>(null);
 
-  const sortedStatuses = useMemo(
-    () => [...statuses].sort((a, b) => a.order - b.order),
-    [statuses]
-  );
+  const sortedStatuses = useMemo(() => {
+    const all = statuses.find((s) => s.id === STATUS_ALL_ID);
+    const rest = statuses
+      .filter((s) => s.id !== STATUS_ALL_ID)
+      .sort((a, b) => a.order - b.order);
 
-  const statusAllItem = {
-    id: "all",
-    name: "Tous",
-    icon: "view-grid",
-    order: -1,
-  };
+    return { all, rest };
+  }, [statuses]);
 
   const data = useMemo(() => {
-    if (selectedStatusId === "all") {
-      return [statusAllItem, ...sortedStatuses];
+    const all = sortedStatuses.all;
+    const rest = sortedStatuses.rest;
+
+    if (!all) return rest; // au cas où
+
+    // ✅ "all" TOUJOURS en premier
+    if (selectedStatusId === STATUS_ALL_ID) {
+      return [all, ...rest];
     }
 
-    const selected = sortedStatuses.find((s) => s.id === selectedStatusId);
-    const rest = sortedStatuses.filter((s) => s.id !== selectedStatusId);
+    const selected = rest.find((s) => s.id === selectedStatusId);
+    const others = rest.filter((s) => s.id !== selectedStatusId);
 
-    return selected
-      ? [statusAllItem, selected, ...rest]
-      : [statusAllItem, ...sortedStatuses];
+    return selected ? [all, selected, ...others] : [all, ...rest];
   }, [sortedStatuses, selectedStatusId]);
 
   const select = useCallback(
@@ -65,14 +67,34 @@ export function StatusFilterList({
       }}
       data={data}
       keyExtractor={(item) => item.id}
-      renderItem={({ item }) => (
-        <FilterChip
-          label={t(`books:status.${item.id}`, { defaultValue: t('common:all') })}
-          icon={(item as any).icon}
-          active={selectedStatusId === item.id}
-          onPress={() => select(item.id)}
-        />
-      )}
+      renderItem={({ item }) => {
+        const isAll = item.id === STATUS_ALL_ID;
+        const isActive = selectedStatusId === item.id;
+        const tint = (item as Status).color as string;
+        const backgroundColor =
+          tint ? withAlpha(tint, isActive ? 0.32 : 0.10) : undefined;
+
+        const borderColor =
+          tint ? withAlpha(tint, isActive ? 0.75 : 0.22) : undefined;
+
+        const iconColor = tint ? tint : undefined;
+
+        return (
+          <FilterChip
+            label={
+              isAll
+                ? t("common:all")
+                : t(`books:status.${item.id}`, { defaultValue: item.name })
+            }
+            icon={(item as any).icon}
+            active={isActive}
+            onPress={() => select(item.id)}
+            backgroundColor={backgroundColor}
+            borderColor={borderColor}
+            iconColor={iconColor}
+          />
+        );
+      }}
     />
   );
 }

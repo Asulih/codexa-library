@@ -3,21 +3,32 @@ import { Pressable, StyleSheet, View, Platform } from "react-native";
 import AppText from "@/components/ui/AppText";
 import { useTheme } from "@/providers/ThemeProvider";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useTranslation } from "react-i18next";
 
 type Props = {
   label: string;
   icon: keyof typeof MaterialCommunityIcons.glyphMap;
   active: boolean;
   onPress?: () => void;
+  style?: any; // ✅
+  backgroundColor?: string;
+  iconColor?: string;
+  borderColor?: string;
 };
 
-function FilterChipBase({ label, icon, active, onPress }: Props) {
+function FilterChipBase({
+  label,
+  icon,
+  active,
+  onPress,
+  style,
+  backgroundColor,
+  iconColor,
+  borderColor
+}: Props) {
   const { theme } = useTheme();
-  const { t } = useTranslation('books');
 
   const activeBg =
-    theme.mode === "dark" ? "rgba(236,185,57,0.18)" : "rgba(236,185,57,0.22)";
+    theme.mode === "dark" ? "rgba(236,185,57,0.28)" : "rgba(236,185,57,0.32)";
 
   const idleBg =
     theme.mode === "dark" ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0.65)";
@@ -27,9 +38,10 @@ function FilterChipBase({ label, icon, active, onPress }: Props) {
       onPress={onPress}
       style={({ pressed }) => [
         styles.chip,
+        style,
         {
-          borderColor: active ? "rgba(236,185,57,0.35)" : theme.borderSoft,
-          backgroundColor: active ? activeBg : idleBg,
+          borderColor: borderColor ?? (active ? "rgba(236,185,57,0.35)" : theme.borderSoft),
+          backgroundColor: backgroundColor ?? (active ? activeBg : idleBg),
           shadowColor: theme.shadowColor,
           transform: [{ scale: pressed ? 0.985 : 1 }],
           opacity: pressed ? 0.92 : 1,
@@ -43,7 +55,7 @@ function FilterChipBase({ label, icon, active, onPress }: Props) {
         <MaterialCommunityIcons
           name={icon}
           size={14}
-          color={active ? theme.primary : theme.muted}
+          color={iconColor ?? (active ? theme.primary : theme.muted)}
         />
       </View>
 

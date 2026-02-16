@@ -16,6 +16,8 @@ export interface Book {
   tagIds: string[];
   statusId: string;
   userId: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export const books: Book[] = [
@@ -33,7 +35,9 @@ export const books: Book[] = [
     cover: require('@/assets/images/dummy/books/dune_.jpg'),
     tagIds: ['tag#1', 'tag#2'],
     statusId: 'status#2',
-    userId: 'user#1'
+    userId: 'user#1',
+    createdAt: '2026-02-10',
+    updatedAt: '2026-02-10',
   },
   {
     id: 'book#2',
@@ -51,6 +55,8 @@ export const books: Book[] = [
     tagIds: ['tag#3'],
     statusId: 'status#3',
     userId: 'user#1',
+    createdAt: '2026-02-10',
+    updatedAt: '2026-02-10',
   },
   {
     id: 'book#3',
@@ -66,6 +72,8 @@ export const books: Book[] = [
     tagIds: ['tag#4'],
     statusId: 'status#4',
     userId: 'user#1',
+    createdAt: '2026-02-10',
+    updatedAt: '2026-02-10',
   },
   {
     id: 'book#4',
@@ -83,6 +91,8 @@ export const books: Book[] = [
     tagIds: ['tag#5'],
     statusId: 'status#2',
     userId: 'user#1',
+    createdAt: '2026-02-10',
+    updatedAt: '2026-02-10',
   },
   {
     id: 'book#5',
@@ -99,6 +109,8 @@ export const books: Book[] = [
     tagIds: ['tag#6', 'tag#7', 'tag#8', 'tag#9'],
     statusId: 'status#3',
     userId: 'user#1',
+    createdAt: '2026-02-10',
+    updatedAt: '2026-02-10',
   },
   {
     id: 'book#6',
@@ -114,6 +126,8 @@ export const books: Book[] = [
     tagIds: ['tag#1', 'tag#2'],
     statusId: 'status#5',
     userId: 'user#1',
+    createdAt: '2026-02-10',
+    updatedAt: '2026-02-10',
   },
 ];
 

@@ -13,6 +13,10 @@
   "tags": {
     "title": "Étiquettes",
     "minimize": "Réduire",
-    "labelAll": "$t(tags.title) : $t(common:all)"
-  }
+    "labelAll": "$t(tags.title) : $t(common:all)",
+    "selectedCount_one": "{{count}} sélectionné",
+    "selectedCount_other": "{{count}} sélectionnés",
+    "clear": "Effacer"
+  },
+  "add": "Ajouter un livre"
 }

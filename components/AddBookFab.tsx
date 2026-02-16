@@ -1,21 +1,41 @@
 import React from "react";
 import { Pressable, StyleSheet, Platform } from "react-native";
-import { Feather } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useTheme } from "@/providers/ThemeProvider";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function AddBookFab({ onPress }: { onPress?: () => void }) {
   const { theme } = useTheme();
+  const insets = useSafeAreaInsets();
+
+  const size = 44;          // ✅ plus petit
+  const radius = size / 2;
 
   return (
     <Pressable
       onPress={onPress}
+      hitSlop={12}
       style={({ pressed }) => [
         styles.fab,
-        { backgroundColor: theme.primary, shadowColor: theme.shadowColor },
-        pressed && { transform: [{ scale: 0.98 }], opacity: 0.95 },
+        {
+          width: size,
+          height: size,
+          borderRadius: radius,
+          backgroundColor: theme.primary,
+          borderColor: theme.borderSoft,
+          shadowColor: theme.shadowColor,
+          bottom: insets.bottom + 14, // un poil plus proche
+          opacity: pressed ? 0.92 : 1,
+          transform: [{ scale: pressed ? 0.98 : 1 }],
+        },
+        Platform.OS === "android" && { elevation: 2 },
       ]}
     >
-      <Feather name="plus" size={22} color={theme.mode === "dark" ? "#14110f" : "#372e29"} />
+      <MaterialCommunityIcons
+        name="plus"
+        size={20} // ✅ adapté
+        color={theme.mode === "dark" ? theme.text : "#1b1613"}
+      />
     </Pressable>
   );
 }
@@ -23,16 +43,14 @@ export default function AddBookFab({ onPress }: { onPress?: () => void }) {
 const styles = StyleSheet.create({
   fab: {
     position: "absolute",
-    right: 18,
-    bottom: 18,
-    height: 56,
-    width: 56,
-    borderRadius: 18,
+    right: 16,
     alignItems: "center",
     justifyContent: "center",
-    shadowOpacity: 0.18,
-    shadowRadius: 24,
-    shadowOffset: { width: 0, height: 12 },
-    elevation: Platform.OS === "android" ? 6 : 0,
+    borderWidth: 1,
+
+    // shadow plus discrète
+    shadowOpacity: 0.12,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 8 },
   },
 });

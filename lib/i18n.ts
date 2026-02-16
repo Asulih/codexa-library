@@ -12,7 +12,7 @@ function getDeviceLanguage() {
 if (!i18n.isInitialized) {
   i18n.use(initReactI18next).init({
     resources,
-    lng: 'fr',//getDeviceLanguage(),
+    lng: 'fr',//getDeviceLanguage(), // TODO set to getDeviceLanguage()
     fallbackLng: "en",
     defaultNS: "common",
     ns: namespaces as unknown as string[],

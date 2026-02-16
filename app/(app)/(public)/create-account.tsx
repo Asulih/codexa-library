@@ -2,7 +2,6 @@ import AppleAuthButton from '@/components/auth/AppleAuthButton';
 import GoogleAuthButton from '@/components/auth/GoogleAuthButton';
 import { CodexaButton, typography } from '@/components/ui';
 import AppText from '@/components/ui/AppText';
-import { Colors, Fonts } from '@/constants/theme';
 import useUserStore from '@/hooks/use-userstore'
 import { useTheme } from '@/providers/ThemeProvider';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -73,7 +72,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 30,
-    fontFamily: Fonts.brandBlack,
     marginVertical: 22,
   },
   buttonContainer: {

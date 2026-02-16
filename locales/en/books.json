@@ -13,6 +13,11 @@
   "tags": {
     "title": "Tags",
     "minimize": "Minimize",
-    "labelAll": "$t(tags.title): $t(common:all)"
-  }
+    "labelAll": "$t(tags.title): $t(common:all)",
+    "selectedCount_one": "{{count}} selected",
+    "selectedCount_other": "{{count}} selected",
+    "clear": "Clear"
+    
+  },
+  "add": "Add a book"
 }

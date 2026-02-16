@@ -15,7 +15,7 @@ import { Screen } from "@/components/ui";
 import AppText from "@/components/ui/AppText";
 import { useTheme } from "@/providers/ThemeProvider";
 
-import { statuses } from "@/models/status";
+import { STATUS_ALL_ID, statuses } from "@/models/status";
 import type { Book } from "@/models/book";
 
 import { useBooksStore } from "@/store/useBooksStore";
@@ -28,6 +28,7 @@ import { useFiltersStore } from "@/store/useFiltersStore";
 import { useTranslation } from "react-i18next";
 import { Link } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { BookRow } from "@/components/books/BookRow";
 
 function useColumns(width: number) {
   return width >= 420 ? 3 : 2;
@@ -53,23 +54,31 @@ export default function BooksScreen() {
 
   const query = useFiltersStore((s) => s.query);
   const selectedStatusId = useFiltersStore((s) => s.selectedStatusId);
-  const selectedTagId = useFiltersStore((s) => s.selectedTagId);
+  const selectedTagIds = useFiltersStore((s) => s.selectedTagIds);
+  const displayMode = useFiltersStore((s) => s.selectedDisplayId);
 
   const setQuery = useFiltersStore((s) => s.setQuery);
   const setSelectedStatusId = useFiltersStore((s) => s.setSelectedStatusId);
-  const setSelectedTagId = useFiltersStore((s) => s.setSelectedTagId);
+  const toggleTagId = useFiltersStore((s) => s.toggleTagId);
+  const clearTags = useFiltersStore((s) => s.clearTags);
+  const setDisplayMode = useFiltersStore((s) => s.setDisplayMode);
+
+  const isGrid = displayMode === 'cover';
 
   const tagsWithCount = useTagsWithCount(books);
 
   const filteredBooks = useMemo(() => {
     let list = books;
 
-    if (selectedStatusId !== "all") {
+    if (selectedStatusId !== STATUS_ALL_ID) {
       list = list.filter((b) => b.statusId === selectedStatusId);
     }
 
-    if (selectedTagId !== "all") {
-      list = list.filter((b) => (b.tagIds ?? []).includes(selectedTagId));
+    if (selectedTagIds.length > 0) {
+      list = list.filter((b) => {
+        const ids = b.tagIds ?? [];
+        return selectedTagIds.some((id) => ids.includes(id));
+      });
     }
 
     const q = query.trim().toLowerCase();
@@ -84,11 +93,31 @@ export default function BooksScreen() {
     }
 
     return list;
-  }, [books, query, selectedStatusId, selectedTagId]);
+  }, [books, query, selectedStatusId, selectedTagIds]);
 
   const renderBook = useCallback(
-    ({ item }: { item: Book }) => <BookCard book={item} width={cardWidth} />,
-    [cardWidth]
+    ({ item }: { item: Book }) => {
+      const href = { pathname: "/books/[id]", params: { id: item.id } } as const;
+
+      if (displayMode === "list") {
+        return (
+          <Link href={href} asChild>
+            <TouchableOpacity activeOpacity={0.9}>
+              <BookRow book={item} />
+            </TouchableOpacity>
+          </Link>
+        );
+      }
+
+      return (
+        <Link href={href} asChild>
+          <TouchableOpacity activeOpacity={0.9}>
+            <BookCard book={item} width={cardWidth} />
+          </TouchableOpacity>
+        </Link>
+      );
+    },
+    [BookRow, BookCard, cardWidth, displayMode]
   );
 
   const idleBg =
@@ -136,7 +165,7 @@ export default function BooksScreen() {
           </TouchableOpacity>
         </Link>
       </View>
-
+      
       <FiltersBar
         pagePadding={pagePadding}
         statuses={statuses}
@@ -144,24 +173,26 @@ export default function BooksScreen() {
         onSelectStatusId={setSelectedStatusId}
         tags={tagsWithCount}
         booksCount={books.length}
-        selectedTagId={selectedTagId}
-        onSelectTagId={setSelectedTagId}
+        selectedTagIds={selectedTagIds}
+        onToggleTagId={toggleTagId}
+        onClearTags={clearTags}
         maxVisibleTags={5}
       />
+
 
       {/* GRID */}
       <FlatList
         data={filteredBooks}
         keyExtractor={(item) => item.id}
-        numColumns={columns}
-        key={columns}
+        numColumns={isGrid ? columns : 1}
+        key={`${displayMode}:${columns}`}
         contentContainerStyle={{
           paddingHorizontal: pagePadding,
           paddingTop: 14,
           paddingBottom: 100,
         }}
-        columnWrapperStyle={{ gap }}
-        ItemSeparatorComponent={() => <View style={{ height: 18 }} />}
+        columnWrapperStyle={ isGrid ? { gap } : undefined }
+        ItemSeparatorComponent={() => <View style={{ height: isGrid ? 18 : 12 }} />}
         renderItem={renderBook}
         // perf easy wins:
         removeClippedSubviews
