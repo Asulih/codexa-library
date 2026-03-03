@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Alert, ScrollView, StyleSheet, View } from "react-native";
 import { useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -10,10 +10,11 @@ import { useTheme } from "@/providers/ThemeProvider";
 import { useBookDetail } from "@/hooks/useBookDetail";
 import BookHero from "@/components/books/detail/BookHero";
 import BookTitleBlock from "@/components/books/detail/BookTitleBlock";
-import BookTagsChips from "@/components/books/detail/BookTagChips";
 import BookMetaSection from "@/components/books/detail/BookMetaSection";
 import BookActions from "@/components/books/detail/BookActions";
 import BookDetailHeader from "./BookHeaderDetail";
+import BookTagsEditable from "./BookTagsEditable";
+import EditStatusSheet from "./EditStatusSheet";
 
 export default function BookDetailScreen() {
   const { theme } = useTheme();
@@ -21,7 +22,9 @@ export default function BookDetailScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
 
-  const { book, status, bookTags, deleteBook } = useBookDetail();
+  const [statusOpen, setStatusOpen] = useState(false);
+
+  const { book, status, bookTags, deleteBook, toggleBookTag, setBookTags, setBookStatus } = useBookDetail();
 
   if (!book) {
     return (
@@ -69,11 +72,9 @@ export default function BookDetailScreen() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: insets.bottom + 32, paddingTop: 12 }}
       >
-        <BookHero cover={book.cover} status={status} />
+        <BookHero cover={book.cover} status={status} onPressStatus={() => setStatusOpen(true)} />
 
         <BookTitleBlock title={book.title} authors={book.authors} />
-
-        <BookTagsChips tags={bookTags} />
 
         <BookMetaSection book={book} locale={i18n.language} />
 
@@ -88,8 +89,23 @@ export default function BookDetailScreen() {
           </View>
         ) : null}
 
+        <BookTagsEditable
+          bookId={book.id}
+          tagIds={book.tagIds}
+          tags={bookTags}
+          onRemoveTag={(tagId) => toggleBookTag(book.id, tagId)} // tap chip => remove
+          onSetTagIds={(next) => setBookTags(book.id, next)}     // sheet => set
+        />
+
         <BookActions onEdit={onEdit} onDelete={onDelete} />
       </ScrollView>
+
+      <EditStatusSheet
+        visible={statusOpen}
+        onClose={() => setStatusOpen(false)}
+        value={book.statusId}
+        onChange={(next) => setBookStatus(book.id, next)} // vient de useBookDetail
+      />
     </Screen>
   );
 }

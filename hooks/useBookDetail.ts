@@ -12,6 +12,10 @@ export function useBookDetail() {
   const deleteBook = useBooksStore((s) => s.deleteBook);
   const tags = useTagsStore((s) => s.tags);
 
+  const toggleBookTag = useBooksStore((s) => s.toggleBookTag);
+  const setBookTags = useBooksStore((s) => s.setBookTags);
+  const setBookStatus = useBooksStore((s) => s.setBookStatus);
+
   const book = useMemo(() => books.find((b) => b.id === id), [books, id]);
 
   const status = useMemo(() => {
@@ -25,5 +29,5 @@ export function useBookDetail() {
     return tags.filter((t) => set.has(t.id));
   }, [book, tags]);
 
-  return { id, book, status, bookTags, deleteBook };
+  return { id, book, status, bookTags, deleteBook, toggleBookTag, setBookTags, setBookStatus };
 }

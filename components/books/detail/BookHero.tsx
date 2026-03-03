@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, StyleSheet, View } from "react-native";
+import { Image, Pressable, StyleSheet, View } from "react-native";
 import type { ImageSourcePropType } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
@@ -10,9 +10,11 @@ import type { Status } from "@/models/status";
 export default function BookHero({
   cover,
   status,
+  onPressStatus,
 }: {
   cover?: ImageSourcePropType;
   status?: Status;
+  onPressStatus?: () => void;
 }) {
   const { theme } = useTheme();
 
@@ -27,12 +29,21 @@ export default function BookHero({
       )}
 
       {status ? (
-        <View style={[styles.statusBadge, { backgroundColor: status.color }]}>
+        <Pressable
+          onPress={onPressStatus}
+          disabled={!onPressStatus}
+          hitSlop={12}
+          style={({ pressed }) => [
+            styles.statusBadge,
+            { backgroundColor: status.color, opacity: pressed ? 0.92 : 1 },
+          ]}
+        >
           <MaterialCommunityIcons name={status.icon} size={16} color="#14110f" />
           <AppText weight="semibold" style={{ marginLeft: 6, color: "#14110f", fontSize: 12.5 }}>
             {status.name}
           </AppText>
-        </View>
+          <MaterialCommunityIcons name="chevron-down" size={18} color="#14110f" style={{ marginLeft: 6 }} />
+        </Pressable>
       ) : null}
     </View>
   );
