@@ -14,6 +14,7 @@ import StatusSelector from "@/components/books/StatusSelector";
 import BookFormField from "@/components/books/BookFormField";
 import { useBookForm } from "@/hooks/useBookForm";
 import ScanPrefillCard from "./ScanPrefillCard";
+import TagsSelector from "./TagSelector";
 
 export default function AddBookModal() {
   const { theme } = useTheme();
@@ -187,9 +188,10 @@ export default function AddBookModal() {
 
         {/* Tags plus tard */}
         <View style={{ paddingHorizontal: 16, marginTop: 12 }}>
-          <AppText style={{ color: theme.chipMuted, fontSize: 12, marginTop: 4 }}>
-            Prochaine étape : Tags (autocomplete premium).
-          </AppText>
+          <TagsSelector
+            value={values.tagIds}
+            onChange={(next) => setField("tagIds", next)}
+          />
         </View>
       </ScrollView>
     </Screen>
