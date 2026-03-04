@@ -10,6 +10,7 @@ const BooksLayout = () => {
       <Stack.Screen name='index' options={{ headerShown: false }}/>
       <Stack.Screen name='[id]' options={{ headerShown: false }}/>
       <Stack.Screen name='add-book' options={{ headerShown: false }}/>
+      <Stack.Screen name='edit-book' options={{ headerShown: false }}/>
     </Stack>
   )
 }

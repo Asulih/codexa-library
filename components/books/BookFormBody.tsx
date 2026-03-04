@@ -1,23 +1,14 @@
 import React from "react";
-import { Pressable, ScrollView, StyleSheet, View, Alert } from "react-native";
+import { ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useRouter } from "expo-router";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useTranslation } from "react-i18next";
 
-import { Screen, Divider } from "@/components/ui";
-import AppText from "@/components/ui/AppText";
-import { useTheme } from "@/providers/ThemeProvider";
-
+import { Divider } from "@/components/ui";
 import CoverPicker from "@/components/books/CoverPicker";
-import StatusSelector from "@/components/books/StatusSelector";
 import BookFormField from "@/components/books/BookFormField";
-import { useBookForm } from "@/hooks/useBookForm";
-import ScanPrefillCard from "./ScanPrefillCard";
-import TagsSelector from "./TagSelector";
 
 export type BookFormMode = "create" | "edit" | "read";
-export type BookFormValues = {
+
+export type BookFormBodyValues = {
   title: string;
   authorsText: string;
   publisher: string;
@@ -33,24 +24,23 @@ export type BookFormValues = {
 
 type Props = {
   mode: BookFormMode;
-  values: BookFormValues;
-  setField: <K extends keyof BookFormValues>(key: K, value: BookFormValues[K]) => void;
+  values: BookFormBodyValues;
+  setField: <K extends keyof BookFormBodyValues>(key: K, value: BookFormBodyValues[K]) => void;
 
   topSlot?: React.ReactNode;    // ScanPrefillCard
   middleSlot?: React.ReactNode; // StatusSelector
   bottomSlot?: React.ReactNode; // TagsSelector
 };
 
-export default function BookForm({ mode, values, setField, topSlot, middleSlot, bottomSlot }: Props) {
-  const { theme } = useTheme();
-  const { t } = useTranslation(["books", "common"]);
+export default function BookFormBody({ mode, values, setField, topSlot, middleSlot, bottomSlot }: Props) {
   const insets = useSafeAreaInsets();
   const editable = mode !== "read";
+
   return (
     <ScrollView
       keyboardShouldPersistTaps="always"
       showsVerticalScrollIndicator={false}
-      contentContainerStyle={{ paddingBottom: insets.bottom + 28 }}
+      contentContainerStyle={{ paddingTop: insets.top, paddingBottom: insets.bottom + 28 }}
     >
       {topSlot}
 

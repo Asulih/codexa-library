@@ -88,6 +88,7 @@ export default function EditStatusSheet({ visible, onClose, value, onChange }: P
           <View style={styles.wrap}>
             {items.map((s) => (
               <FilterChip
+                key={s.id}
                 label={t(`books:status.${s.id}`, { defaultValue: s.name })}
                 icon={(s as any).icon}
                 active={s.id === value}
