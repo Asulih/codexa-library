@@ -51,8 +51,10 @@ export default function BookDetailScreen() {
   };
 
   const onEdit = () => {
-    // Ajuste la route quand tu feras l'édition
-    router.push(`/books/edit/${book.id}`);
+    router.push({
+      pathname: "/(app)/(auth)/(tabs)/books/edit-book",
+      params: { id: book.id },
+    });
   };
 
   return (

@@ -1,5 +1,6 @@
-import BookForm from "@/components/books/BookForm";
+import AddBookScreen from "@/components/books/detail/AddBookScreen";
+import React from "react";
 
 export default function AddBookModal() {
-  return <BookForm />;
+  return <AddBookScreen />;
 }
